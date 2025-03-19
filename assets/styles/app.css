@@ -1,4 +1,4 @@
-@import url("https://fonts.cdnfonts.com/css/poppins");
+@import url("https://fonts.cdnfonts.com/css/marianne");
 
 * {
   margin: 0;
@@ -7,5 +7,5 @@
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: "Marianne", sans-serif;
 }
