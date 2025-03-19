@@ -1,0 +1,389 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello LandingController!{% endblock %}
+
+{% block body %}
+<style>
+    body {
+        gap: 72px;
+        width: 100wh;
+        display: flex;
+        flex-direction: column;
+        font-family: "Marianne";
+    }
+        
+    section {
+        width: 100%;
+        margin: 0 auto;
+        max-width: 1000px;
+    }
+        
+    nav {
+        width: 100%;
+        display: flex;
+        margin: 0 auto;
+        padding: 12px 0;
+        max-width: 1000px;
+        justify-content: space-between;
+    }
+        
+    .logo {
+        gap: 8px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+    }
+        
+    .logo img {
+        height: 44px;
+    }
+        
+    .text-wrapper {
+        font-weight: bold;
+    }
+        
+    .auth {
+        gap: 8px;
+        display: flex;
+        height: 44px;
+    }
+
+    button a {
+        text-decoration: none;
+        color: white;
+    }
+        
+    .signin--button {
+        border: none;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+        font-weight: 600;
+        padding: 12px 16px;
+        border-radius: 44px;
+        background: #00b8de;
+    }
+        
+    .signin--button:hover {
+        background: #00a2c2;
+    }
+        
+    .login--button {
+        border: none;
+        cursor: pointer;
+        transition: 0.3s;
+        font-weight: 600;
+        padding: 12px 16px;
+        border-radius: 44px;
+        color: #111 !important;
+        background: transparent;
+    }
+    
+    .login--button a {
+        color: #111 !important;
+    }
+        
+    .login--button:hover {
+        background: #ebebeb !important;
+    }
+        
+    .hero--section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+        
+    .hero--left {
+        gap: 46px;
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+    }
+        
+    .hero--texts {
+        gap: 24px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+        
+    .hero--texts h1 {
+        width: 100%;
+        font-size: 50px;
+        font-weight: bold;
+    }
+        
+    .hero--texts p {
+        width: 100%;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 27px;
+    }
+        
+    .hero--left div button {
+        border: none;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+        font-weight: 600;
+        padding: 16px 34px;
+        border-radius: 12px;
+        background: #00b8de;
+    }
+        
+    .hero--image {
+        height: 400px;
+    }
+        
+    .stats {
+        display: flex;
+        padding: 32px 32px;
+        border-radius: 10px;
+        max-width: 900px !important;
+        justify-content: space-around;
+        box-shadow: 0px 8px 16px #dddddd6d;
+    }
+        
+    .stats--separator {
+        width: 2px;
+        height: 80px;
+        background: #eeeff2;
+    }
+        
+    .stats--icon {
+        height: 45px;
+    }
+        
+    .stat--element {
+        gap: 16px;
+        display: flex;
+        align-items: center;
+    }
+        
+    .stats--text {
+        gap: 8px;
+        display: flex;
+        flex-direction: column;
+    }
+        
+    .stat--number {
+        font-size: 16px;
+        font-weight: bold;
+    }
+        
+    .stats--text p {
+        font-size: 14px;
+    }
+        
+    .users--head {
+        gap: 14px;
+        display: flex;
+        margin: 0 auto;
+        max-width: 500px;
+        flex-direction: column;
+    }
+        
+    .users--head h1 {
+        text-align: center;
+        font-size: 35px;
+        font-weight: 700;
+        line-height: 42px;
+    }
+        
+    .users--head p {
+        text-align: center;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+    }
+        
+    .caroussel {
+        display: flex;
+        margin-top: 42px;
+    }
+        
+    .caroussel--el {
+        flex: 1;
+        height: 350px;
+        overflow: hidden;
+        position: relative;
+        transition: 0.3s ease-in-out;
+    }
+        
+    .caroussel--el img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border: solid 1px white;
+    }
+        
+    .border--radius--left {
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+    }
+        
+    .border--radius--right {
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+        
+    .caroussel--el:hover {
+        flex: 1.5;
+    }
+        
+    .caroussel--el div {
+        bottom: 20px;
+        padding: 8px 12px;
+        position: absolute;
+        background: #0000002e;
+    }
+        
+    .caroussel--el div p {
+        color: white;
+        font-weight: 600;
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+        
+    .caroussel--el div span {
+        color: white;
+        font-weight: 400;
+        font-size: 16px;
+        text-shadow: 0 0 4px #949494;
+    }
+        
+    footer {
+        width: 100wh;
+        display: flex;
+        padding: 40px 0;
+        min-height: 250px;
+        background: #dbdbdb;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+
+
+      
+</style>
+
+<body>
+    <!-- NAV BAR -->
+    <nav>
+        <div class="logo">
+            <img class="image" src="assets/img/image-22.png" />
+            <div class="text-wrapper">Wish</div>
+        </div>
+
+        <div class="auth">
+            <button class="login--button"><a href="/authentication/login">se connecter</a></button>
+            <button class="signin--button"><a href="/authentication/signin">Créer un compte</a></button>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+
+    <section class="hero--section">
+        <div class="hero--left">
+            <div class="hero--texts">
+                <h1>Envie de faire plaisir à vos proches ?</h1>
+                <p>
+                    découvrez la wish list de vos proches et réalisez leurs souhaits ! <br /> Rien de mieux qu’un
+                    sourire sur le visage de vos proches
+                </p>
+            </div>
+
+            <div>
+                <button class="hero--button">Commencer</button>
+            </div>
+        </div>
+
+        <img class="hero--image" src="assets/img/hero--picture.png" />
+    </section>
+
+    <!-- STATS -->
+
+    <section class="stats">
+        <div class="stat--element">
+            <img class="stats--icon" src="assets/img/user.png" />
+            <div class="stats--text">
+                <h1 class="stat--number">90+</h1>
+                <p>Utilisateurs</p>
+            </div>
+        </div>
+
+        <div class="stats--separator"></div>
+
+        <div class="stat--element">
+            <img class="stats--icon" src="assets/img/location.png" />
+            <div class="stats--text">
+                <h1 class="stat--number">30+</h1>
+                <p>Wish list réalisées</p>
+            </div>
+        </div>
+
+        <div class="stats--separator"></div>
+
+        <div class="stat--element">
+            <img class="stats--icon" src="assets/img/Server.png" />
+            <div class="stats--text">
+                <h1 class="stat--number">50+</h1>
+                <p>partages</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- HERO SECTION -->
+
+    <section class="users">
+        <div class="users--head">
+            <h1>Accompagné par des milliers de consommateurs</h1>
+            <p>Ce sont les témoignages de nos clients qui nous ont rejoint avec grand plaisir en utilisant cette
+                fonctionnalité folle</p>
+        </div>
+
+        <div class="caroussel">
+            <div class="caroussel--el border--radius--left">
+                <img src="assets/img/carous--2.jpeg" alt="">
+
+                <div>
+                    <p>Yessica Christy</p>
+                    <span>“Wow... I am very happy to use this VPN, it turned out to be more than my expectations and so
+                        far there have been no problems. LaslesVPN always the best”.</span>
+                </div>
+            </div>
+
+            <div class="caroussel--el">
+                <img src="assets/img/carous--1.jpeg" alt="">
+
+                <div>
+                    <p>Yessica Christy</p>
+                    <span>“Wow... I am very happy to use this VPN, it turned out to be more than my expectations and so
+                        far there have been no problems. LaslesVPN always the best”.</span>
+                </div>
+            </div>
+
+            <div class="caroussel--el border--radius--right">
+                <img src="assets/img/carous--3.jpeg" alt="">
+
+                <div>
+                    <p>Yessica Christy</p>
+                    <span>“Wow... I am very happy to use this VPN, it turned out to be more than my expectations and so
+                        far there have been no problems. LaslesVPN always the best”.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <nav>
+            <div class="logo">
+                <img class="image" src="assets/img/image-22.png" />
+                <div class="text-wrapper">Wish</div>
+            </div>
+
+            <div></div>
+        </nav>
+    </footer>
+</body>
+
+{% endblock %}

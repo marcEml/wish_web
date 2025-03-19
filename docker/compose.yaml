@@ -1,0 +1,53 @@
+services:
+  postgres:
+    restart: always
+    image: postgres:16-alpine
+    container_name: postgres_wish
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=wish_user
+      - POSTGRES_DB=wish_db
+    ports:
+      - 5433:5432
+    volumes:
+      - postgres_wish_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "wish_user"]
+      interval: 10s
+      retries: 5
+
+  php:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.php
+    container_name: php_container
+    volumes:
+      - ../:/var/www/html
+    depends_on:
+      - postgres
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin_wish
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=password
+    ports:
+      - 8082:80
+    volumes:
+      - pgadmin_wish_data:/var/lib/pgadmin
+      - ./servers.json:/pgadmin4/servers.json
+    entrypoint: >
+      /bin/sh -c "
+      mkdir -p /var/lib/pgadmin/storage/admin_admin.com;
+      echo 'postgres:*:*:wish_user:postgres' > /var/lib/pgadmin/storage/admin_admin.com/pgpass;
+      chmod 600 /var/lib/pgadmin/storage/admin_admin.com/pgpass;
+      /entrypoint.sh
+      "
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_wish_data:
+  pgadmin_wish_data:
