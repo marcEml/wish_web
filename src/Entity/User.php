@@ -41,9 +41,16 @@ class User implements PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(targetEntity: Membership::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Membership $membership = null;
 
+    /**
+     * @var Collection<int, Membership>
+     */
+    #[ORM\OneToMany(targetEntity: Membership::class, mappedBy: 'member')]
+    private Collection $memberships;
+
     public function __construct()
     {
         $this->wishlists = new ArrayCollection();
+        $this->memberships = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -119,6 +126,36 @@ class User implements PasswordAuthenticatedUserInterface
     public function setStatus(string $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Membership>
+     */
+    public function getMemberships(): Collection
+    {
+        return $this->memberships;
+    }
+
+    public function addMembership(Membership $membership): static
+    {
+        if (!$this->memberships->contains($membership)) {
+            $this->memberships->add($membership);
+            $membership->setMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMembership(Membership $membership): static
+    {
+        if ($this->memberships->removeElement($membership)) {
+            // set the owning side to null (unless already changed)
+            if ($membership->getMember() === $this) {
+                $membership->setMember(null);
+            }
+        }
 
         return $this;
     }

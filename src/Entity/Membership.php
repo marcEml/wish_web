@@ -16,12 +16,13 @@ class Membership
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
-    #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'membership')]
-    private User $user;
-
     #[ORM\ManyToOne(inversedBy: 'memberships')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Wishlist $wishlist = null;
+
+    #[ORM\ManyToOne(inversedBy: 'memberships')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -48,6 +49,18 @@ class Membership
     public function setWishlist(?Wishlist $wishlist): static
     {
         $this->wishlist = $wishlist;
+
+        return $this;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
