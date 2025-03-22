@@ -15,6 +15,7 @@ class ItemType extends AbstractType
             ->add('name')
             ->add('price')
             ->add('externalLink')
+            ->add('description')
         ;
     }
 
