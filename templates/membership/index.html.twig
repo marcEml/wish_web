@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Membership index{% endblock %}
+
+{% block body %}
+    <h1>Membership index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>Wishlist ID</th>
+                <th>User ID</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for membership in memberships %}
+            <tr>
+                <td>{{ membership.status }}</td>
+                <td>
+                    <p>{{membership.wishlist.id}}</p>
+                </td>
+                <td>
+                    <p>{{membership.user.id}}</p>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_membership_new') }}">Create new</a>
+{% endblock %}

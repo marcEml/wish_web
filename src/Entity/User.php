@@ -130,6 +130,11 @@ class User implements PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getWishlists(): Collection
+    {
+        return $this->wishlists;
+    }
+
     /**
      * @return Collection<int, Membership>
      */
@@ -142,7 +147,7 @@ class User implements PasswordAuthenticatedUserInterface
     {
         if (!$this->memberships->contains($membership)) {
             $this->memberships->add($membership);
-            $membership->setMember($this);
+            $membership->setUser($this);
         }
 
         return $this;
@@ -152,8 +157,8 @@ class User implements PasswordAuthenticatedUserInterface
     {
         if ($this->memberships->removeElement($membership)) {
             // set the owning side to null (unless already changed)
-            if ($membership->getMember() === $this) {
-                $membership->setMember(null);
+            if ($membership->getUser() === $this) {
+                $membership->setUser(null);
             }
         }
 

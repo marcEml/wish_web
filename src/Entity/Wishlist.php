@@ -19,7 +19,7 @@ class Wishlist
     private ?string $title = null;
 
     #[ORM\ManyToMany(targetEntity: Item::class)]
-    private Collection $items;
+    private ?Collection $items = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'wishlists')]
     #[ORM\JoinColumn(nullable: false)]
@@ -50,6 +50,23 @@ class Wishlist
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getItems(): ?Collection
+    {
+        return $this->items;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
