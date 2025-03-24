@@ -16,6 +16,15 @@ class ItemRepository extends ServiceEntityRepository
         parent::__construct($registry, Item::class);
     }
 
+    public function findTop3ByPrice(): array
+    {
+        return $this ->createQueryBuilder('i')
+            ->orderBy('i.price', 'DESC')
+            ->setMaxResults(3)
+            ->getQuery()
+            ->getResult(); 
+    }
+
 //    /**
 //     * @return Item[] Returns an array of Item objects
 //     */
