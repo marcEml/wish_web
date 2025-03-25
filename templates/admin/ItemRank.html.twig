@@ -1,7 +1,7 @@
 {# templates/admin/ItemRank.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Top-3 Items for a Chosen Wishlist{% endblock %}
+{% block title %}Les 3 articles les plus chers par wishlist{% endblock %}
 
 {% block body %}
 <nav class="admin-menu">
@@ -13,49 +13,42 @@
         <div class="dropdown-content">
             <!-- 愿望清单总榜 -->
             <a href="{{ path('top3_wishlists') }}">
-                The Top-3 Wishlists by Total Value
+                Les 3 meilleures wishlists par valeur totale
             </a>
             <!-- 本页面：单个清单内商品排行榜 -->
             <a href="{{ path('top3_items') }}">
-                The Top-3 Most Expensive Items (choose a Wishlist)
+                Les 3 articles les plus chers par wishlist
             </a>
         </div>
     </div>
 </nav>
 
-<h1>Choose a Wishlist to see its Top-3 most expensive items</h1>
+<h1>Les 3 articles les plus chers par wishlist</h1>
 
 <!-- 下拉菜单表单，使用 GET 提交 -->
 <form method="get" action="{{ path('top3_items') }}">
-    <label for="wishlistId">Select a wishlist:</label>
+    <label for="wishlistId">Wishlist</label>
     <select name="wishlistId" id="wishlistId" onchange="this.form.submit()">
-        <option value="">-- Please choose --</option>
+        <option value="">Sélectionner une wishlist</option>
         {% for w in wishlists %}
             <option value="{{ w.id }}"
                 {% if selectedWishlist and w.id == selectedWishlist.id %} selected {% endif %}
             >
-                {{ w.name }}
+                {{ w.title }}
             </option>
         {% endfor %}
     </select>
 </form>
 
 {% if selectedWishlist %}
-    <h2>Top-3 Items for "{{ selectedWishlist.name }}"</h2>
+    <h2>Top-3 Items for "{{ selectedWishlist.title }}"</h2>
     <div class="top-items">
         {% if topItems is not empty %}
-            {% for item in topItems %}
+            {% set positions = {0: {class: 'bar1', pos: 1}, 1: {class: 'bar2', pos: 2}, 2: {class: 'bar3', pos: 3}} %}
+            {% for index, item in topItems %}
                 <div class="top-item">
-                    <div class="top-item-image">
-                        {% if item.externalLink %}
-                            <img src="{{ asset(item.externalLink) }}" 
-                                 alt="{{ item.name }}" 
-                                 style="max-width: 100%; max-height: 100%;" />
-                        {% else %}
-                            <img src="{{ asset('images/placeholder.png') }}"
-                                 alt="No image"
-                                 style="max-width: 100%; max-height: 100%;" />
-                        {% endif %}
+                    <div class="top-item-bar {{ positions[index].class }}">
+                        {{ positions[index].pos }}
                     </div>
                     <div class="top-item-label">
                         {{ item.name }}: {{ item.price }}€
@@ -63,11 +56,11 @@
                 </div>
             {% endfor %}
         {% else %}
-            <p>No items found or no items in this wishlist.</p>
+            <p>Cette wishlist ne comporte aucun item pour l'instant.</p>
         {% endif %}
     </div>
 {% else %}
-    <p>Please select a wishlist above to see its top items.</p>
+    <p>Choisissez une wishlist pour voir ses 3 articles les plus chers.</p>
 {% endif %}
 
 
@@ -119,30 +112,37 @@
 
     .top-items {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 2rem;
         margin-top: 2rem;
     }
     .top-item {
-        display: flex;
-        flex-direction: column;
-        width: 150px;
         text-align: center;
-        border: 1px solid #ccc;
-        margin: 0 0.5rem;
     }
-    .top-item-image {
-        background-color: #ccc;
-        height: 100px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .top-item-label {
+    .top-item-bar {
         background-color: #8DC63F;
         color: #fff;
         font-weight: bold;
-        padding: 1rem;
-        margin-top: -1px;
+        font-size: 1.5rem;
+        width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+    }
+    .bar1 {
+        height: 180px;
+    }
+    .bar2 {
+        height: 120px;
+    }
+    .bar3 {
+        height: 90px;
+    }
+    .top-item-label {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
     }
 </style>
 

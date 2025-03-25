@@ -44,6 +44,9 @@ class User implements PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Membership::class, mappedBy: 'user')]
     private Collection $memberships;
 
+    #[ORM\Column(options: ["default" => false])]
+    private ?bool $isLocked = null;
+
     public function __construct()
     {
         $this->wishlists = new ArrayCollection();
@@ -150,6 +153,18 @@ class User implements PasswordAuthenticatedUserInterface
                 $membership->setUser(null);
             }
         }
+        return $this;
+    }
+
+    public function isLocked(): ?bool
+    {
+        return $this->isLocked;
+    }
+
+    public function setIsLocked(bool $isLocked): static
+    {
+        $this->isLocked = $isLocked;
+
         return $this;
     }
 }
