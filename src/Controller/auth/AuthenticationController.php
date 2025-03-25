@@ -72,10 +72,10 @@ final class AuthenticationController extends AbstractController
 
             // Create the cookie (example: storing user ID or token)
             $cookie = Cookie::create('user_session')
-            ->withValue($user->getId())
-            ->withExpires(strtotime('+7 days'))
-            ->withSecure(true)
-            ->withHttpOnly(true);
+                ->withValue($user->getId())
+                ->withExpires(strtotime('+7 days'))
+                ->withSecure(true)
+                ->withHttpOnly(true);
 
             $response = $this->redirectToRoute('app_authentication_login');
             $response->headers->setCookie($cookie);
@@ -105,13 +105,13 @@ final class AuthenticationController extends AbstractController
                 return $this->redirectToRoute('app_authentication_login');
             }
 
-            $flasher->success('Bon retour parmis nous '.$user->getLastname());
+            $flasher->success('Bon retour parmis nous ' . $user->getLastname());
 
             $cookie = Cookie::create('user_session')
-            ->withValue($user->getId())
-            ->withExpires(strtotime('+7 days'))
-            ->withSecure(true)
-            ->withHttpOnly(true);
+                ->withValue($user->getId())
+                ->withExpires(strtotime('+7 days'))
+                ->withSecure(true)
+                ->withHttpOnly(true);
 
             $response = $this->redirectToRoute('app_home');
             $response->headers->setCookie($cookie);
@@ -126,7 +126,7 @@ final class AuthenticationController extends AbstractController
     public function logout(): Response
     {
         // Create a response that removes the cookie
-        $response = $this->redirectToRoute('app_authentication_login');
+        $response = $this->redirectToRoute('app_home');
 
         // Invalidate the cookie by setting it with a past expiration date
         $response->headers->setCookie(
