@@ -130,11 +130,18 @@
         <div class="grid-container">
             {% for user in users %}
                 <div class="grid-item">
-                    <p>{{ user.id }}</p>
-                    <p>{{ user.email }}</p>
-                    <p>{{ user.firstname }}</p>
-                    <p>{{ user.lastname }}</p>
-                    <p>{{ user.status }}</p>
+                    <p>Id : {{ user.id }}</p>
+                    <p>Email : {{ user.email }}</p>
+                    <p>Firstname : {{ user.firstname }}</p>
+                    <p>Lastname : {{ user.lastname }}</p>
+                    <p>Status : {{ user.status }}</p>
+                    <p>Is locked : {{ user.isLocked ? 'Yes' : 'No' }}</p>
+                    <form method="POST" action={{ path('admin_lock_user', { 'id': user.id }) }}>
+                        <button type="submit">Lock/Unlock user</button>
+                    </form>
+                    <form method="POST" action={{ path('admin_remove_user', { 'id': user.id }) }}>
+                        <button type="submit">Remove user</button>
+                    </form>
                 </div>
             {% endfor %}
         </div>
