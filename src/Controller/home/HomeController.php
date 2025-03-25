@@ -5,7 +5,7 @@ namespace App\Controller\home;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Membership;
 use App\Entity\Wishlist;
@@ -13,7 +13,6 @@ use App\Entity\User;
 
 final class HomeController extends AbstractController
 {
-    #[Route('/home', name: 'app_home')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
         $userToken = (int)$request->cookies->get('user_session');
