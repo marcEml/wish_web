@@ -17,21 +17,6 @@ use Flasher\Prime\FlasherInterface;
 #[Route('/item')]
 final class ItemController extends AbstractController
 {
-    #[Route('/wishlist/{id}/items', name: 'app_item_index', methods: ['GET'])]
-    public function index(WishlistRepository $wishlistRepository, int $id): Response
-    {
-        $wishlist = $wishlistRepository->find($id);
-
-        if (!$wishlist) {
-            throw $this->createNotFoundException('Wishlist not found');
-        }
-
-        return $this->render('item/index.html.twig', [
-            'items' => $wishlist->getItems(),
-            'wishListId' => $wishlist->getId(),
-        ]);
-    }
-
 
     #[Route('/new/{id}', name: 'app_item_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, FlasherInterface $flasher, int $id): Response
@@ -40,7 +25,7 @@ final class ItemController extends AbstractController
         if (!$wishlist) {
             throw $this->createNotFoundException('Wishlist not found');
         }
-        
+
         $item = new Item();
         $form = $this->createForm(ItemType::class, $item);
         $form->handleRequest($request);
@@ -92,7 +77,7 @@ final class ItemController extends AbstractController
     #[Route('/{id}/{wId}', name: 'app_item_delete', methods: ['POST'])]
     public function delete(Request $request, Item $item, EntityManagerInterface $entityManager, int $wId): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$item->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $item->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($item);
             $entityManager->flush();
         }

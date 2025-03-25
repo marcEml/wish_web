@@ -19,10 +19,16 @@ use App\Entity\Wishlist;
 final class MembershipController extends AbstractController
 {
     #[Route(name: 'app_membership_index', methods: ['GET'])]
-    public function index(MembershipRepository $membershipRepository): Response
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $userToken = (int)$request->cookies->get('user_session');
+        // Get memberships for wishlists owned by the current user
+        $userMemberships = $entityManager->getRepository(Membership::class)->findBy([
+            'wishlist' => $entityManager->getRepository(Wishlist::class)->findBy(['user' => $userToken])
+        ]);
+
         return $this->render('membership/index.html.twig', [
-            'memberships' => $membershipRepository->findAll(),
+            'memberships' => $userMemberships,
         ]);
     }
 
@@ -30,7 +36,7 @@ final class MembershipController extends AbstractController
     public function invite(Request $request, FlasherInterface $flasher, EntityManagerInterface $entityManager): Response
     {
         $membership = new Membership();
-        $form = $this->createForm(MembershipType::class, $membership);
+        $form = $this->createForm(MembershipType::class, $membership, array('userId' => $request->cookies->get('user_session')));
         $form->handleRequest($request);
 
         // Handles form submission

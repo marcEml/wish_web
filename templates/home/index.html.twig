@@ -103,50 +103,11 @@
                           Créée par vous
                         </p>
                         <div class="wishlist-row"> 
-                          <a href="{{ path('app_item_index', {'id': wishlist.id}) }}" class="btn btn-success">
-                            <svg
-                             xmlns="http://www.w3.org/2000/svg"
-                             width="24"
-                             height="24"
-                             viewBox="0 0 24 24"
-                             fill="none"
-                             stroke="currentColor"
-                             stroke-width="2"
-                             stroke-linecap="round"
-                             stroke-linejoin="round"
-                             class="lucide lucide-gift"
-                             style="margin-right: 0.25em;"
-                            >
-                             <rect x="3" y="8" width="18" height="4" rx="1" />
-                             <path d="M12 8v13" />
-                             <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7" />
-                             <path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5" />
-                            </svg>
-                            Voir les cadeaux
-                          </a>   
+                          {{ include('wishlist/_view_button.html.twig') }}   
 
                             {{ include('wishlist/_edit_button.html.twig') }}
                           
-                            <a href="{{ path('app_sharing', {'id': wishlist.id}) }}" class="btn btn-primary">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="lucide lucide-share"
-                                style="margin-right: 0.25em;"
-                              >
-                                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-                                <polyline points="16 6 12 2 8 6" />
-                                <line x1="12" x2="12" y1="2" y2="15" />
-                              </svg>
-                              Partager
-                            </a>
+                            {{ include('wishlist/_share_button.html.twig') }}
                         </div>
                       </div>
                     </div>
@@ -182,7 +143,7 @@
             </div>
           </div>
         {% else %}
-          <p>Vous n'avez pas encore de wishlist... Commencez à offrir des cadeaux!</p>
+          <p>Vous n'avez pas encore de wishlist... Commencez à offrir des cadeaux !</p>
         {% endif %}
       </div>
     </section>

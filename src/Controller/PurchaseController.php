@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Item;
 use App\Entity\Purchase;
+use App\Entity\Wishlist;
 use App\Form\PurchaseType;
 use App\Repository\PurchaseRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,9 +13,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route('/purchase')]
-final class PurchaseController extends AbstractController{
+final class PurchaseController extends AbstractController
+{
     #[Route(name: 'app_purchase_index', methods: ['GET'])]
     public function index(PurchaseRepository $purchaseRepository): Response
     {
@@ -46,10 +50,32 @@ final class PurchaseController extends AbstractController{
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $receiptFile */
+            $receiptFile = $form->get('receiptFile')->getData();
+
+            if ($receiptFile) {
+                $newFilename = uniqid() . '.' . $receiptFile->guessExtension();
+
+                try {
+                    $receiptFile->move(
+                        $this->getParameter('receipts_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // Handle exception if something happens during file upload
+                }
+
+                $purchase->setReceiptUrl($newFilename);
+            }
+
             $entityManager->persist($purchase);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_purchase_index', [], Response::HTTP_SEE_OTHER);
+            $wishlist = $entityManager->getRepository(Wishlist::class)->find($item->getWishlist()->getId());
+            $publicToken = base64_encode($wishlist->getId() . '|public_secret');
+            $publicLink = $this->generateUrl('app_public_wishlist', ['token' => $publicToken], UrlGeneratorInterface::ABSOLUTE_URL);
+
+            return $this->redirectToRoute('app_public_wishlist', ['token' => $publicToken]);
         }
 
         return $this->render('purchase/new.html.twig', [
@@ -87,7 +113,7 @@ final class PurchaseController extends AbstractController{
     #[Route('/{id}', name: 'app_purchase_delete', methods: ['POST'])]
     public function delete(Request $request, Purchase $purchase, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$purchase->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $purchase->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($purchase);
             $entityManager->flush();
         }

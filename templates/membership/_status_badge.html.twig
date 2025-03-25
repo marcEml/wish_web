@@ -1,0 +1,50 @@
+{# _status_badge.html.twig #}
+
+<style>
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.125rem 0.375rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: white;
+}
+
+.status-badge.bg-yellow-500 {
+  background-color: #F59E0B;
+}
+
+.status-badge.bg-green-500 {
+  background-color: #16A34A;
+}
+
+.status-badge.bg-red-500 {
+  background-color: #DC2626;
+}
+
+.status-badge.bg-gray-500 {
+  background-color: #6B7280;
+}
+</style>
+
+{% set badge_class = '' %}
+{% set badge_text = '' %}
+
+{% if status == 'INVITED' %}
+  {% set badge_class = 'bg-yellow-500' %}
+  {% set badge_text = 'En attente' %}
+{% elseif status == 'ACCEPTED' %}
+  {% set badge_class = 'bg-green-500' %}
+  {% set badge_text = 'Accepté' %}
+{% elseif status == 'DECLINED' %}
+  {% set badge_class = 'bg-red-500' %}
+  {% set badge_text = 'Refusé' %}
+{% else %}
+  {% set badge_class = 'bg-gray-500' %}
+  {% set badge_text = 'État inconnu' %}
+{% endif %}
+
+<span class="status-badge {{ badge_class }}">
+  {{ badge_text }}
+</span>

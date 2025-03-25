@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Les 3 meilleures wishlists par valeur totale
+{% endblock %}
+
+{% block body %}
+
+<nav class="admin-menu">
+    <div class="dropdown">
+        <button class="dropbtn">
+            Administration
+            <span class="triangle">▲</span>
+        </button>
+        <div class="dropdown-content">
+            <a href="{{ path('top3_wishlists') }}">
+                Les 3 meilleures wishlists par valeur totale
+            </a>
+            <a href="{{ path('top3_items') }}">
+                Les 3 articles les plus chers par wishlist
+            </a>
+        </div>
+    </div>
+</nav>
+
+<h2>Les 3 meilleures wishlists par valeur totale</h2>
+
+<div class="top3-wishlists">
+    {% set positions = {0: {class: 'bar1', pos: 1}, 1: {class: 'bar2', pos: 2}, 2: {class: 'bar3', pos: 3}} %}
+    
+    {% for index, wishlist in top3Wishlists %}
+        <div class="wishlist-rank">
+            <div class="wishlist-value">
+                {{ positions[index].pos }}. {{ wishlist.wishlist.title }} : {{ wishlist.totalValue }}€
+            </div>
+            <div class="wishlist-bar {{ positions[index].class }}">
+                {{ positions[index].pos }}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<style>
+    .top3-wishlists {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .wishlist-rank {
+        text-align: center;
+    }
+
+    .wishlist-value {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .wishlist-bar {
+        background-color: #8DC63F;
+        color: #fff;
+        font-weight: bold;
+        font-size: 1.5rem;
+        width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .bar1 {
+        height: 180px;
+    }
+    .bar2 {
+        height: 120px;
+    }
+    .bar3 {
+        height: 90px;
+    }
+
+    .wishlist-link a {
+        color: #007bff;
+        text-decoration: underline;
+    }
+
+    .admin-menu {
+        margin-bottom: 1rem;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropbtn {
+        background-color: #0088cc; 
+        color: #fff;
+        padding: 8px 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        outline: none;
+    }
+
+    .triangle {
+        font-size: 12px;
+        margin-left: 8px;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        min-width: 300px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        z-index: 999;
+    }
+
+    .dropdown-content a {
+        display: block;
+        color: #333;
+        padding: 12px 16px;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown:hover .dropbtn {
+        background-color: #006699;
+    }
+</style>
+{% endblock %}

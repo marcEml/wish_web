@@ -14,6 +14,7 @@ class MembershipType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $userId = $options['userId'];
         $builder
             ->add('user', EntityType::class, [
                 'class' => User::class,
@@ -24,6 +25,11 @@ class MembershipType extends AbstractType
                 'class' => Wishlist::class,
                 'choice_label' => 'title',
                 'placeholder' => 'Sélectionnez une wishlist',
+                'query_builder' => function ($repository) use ($userId) {
+                    return $repository->createQueryBuilder('w')
+                        ->where('w.user = :userId')
+                        ->setParameter('userId', $userId);
+                },
             ]);
     }
 
@@ -32,5 +38,6 @@ class MembershipType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Membership::class,
         ]);
+        $resolver->setRequired('userId');
     }
 }

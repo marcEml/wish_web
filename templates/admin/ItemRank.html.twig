@@ -1,0 +1,149 @@
+{# templates/admin/ItemRank.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Les 3 articles les plus chers par wishlist{% endblock %}
+
+{% block body %}
+<nav class="admin-menu">
+    <div class="dropdown">
+        <button class="dropbtn">
+            Administration
+            <span class="triangle">▲</span>
+        </button>
+        <div class="dropdown-content">
+            <!-- 愿望清单总榜 -->
+            <a href="{{ path('top3_wishlists') }}">
+                Les 3 meilleures wishlists par valeur totale
+            </a>
+            <!-- 本页面：单个清单内商品排行榜 -->
+            <a href="{{ path('top3_items') }}">
+                Les 3 articles les plus chers par wishlist
+            </a>
+        </div>
+    </div>
+</nav>
+
+<h1>Les 3 articles les plus chers par wishlist</h1>
+
+<!-- 下拉菜单表单，使用 GET 提交 -->
+<form method="get" action="{{ path('top3_items') }}">
+    <label for="wishlistId">Wishlist</label>
+    <select name="wishlistId" id="wishlistId" onchange="this.form.submit()">
+        <option value="">Sélectionner une wishlist</option>
+        {% for w in wishlists %}
+            <option value="{{ w.id }}"
+                {% if selectedWishlist and w.id == selectedWishlist.id %} selected {% endif %}
+            >
+                {{ w.title }}
+            </option>
+        {% endfor %}
+    </select>
+</form>
+
+{% if selectedWishlist %}
+    <h2>Top-3 Items for "{{ selectedWishlist.title }}"</h2>
+    <div class="top-items">
+        {% if topItems is not empty %}
+            {% set positions = {0: {class: 'bar1', pos: 1}, 1: {class: 'bar2', pos: 2}, 2: {class: 'bar3', pos: 3}} %}
+            {% for index, item in topItems %}
+                <div class="top-item">
+                    <div class="top-item-bar {{ positions[index].class }}">
+                        {{ positions[index].pos }}
+                    </div>
+                    <div class="top-item-label">
+                        {{ item.name }}: {{ item.price }}€
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Cette wishlist ne comporte aucun item pour l'instant.</p>
+        {% endif %}
+    </div>
+{% else %}
+    <p>Choisissez une wishlist pour voir ses 3 articles les plus chers.</p>
+{% endif %}
+
+
+<style>
+    /* 这里可直接复用你已有的样式 */
+    .admin-menu {
+        margin-bottom: 1rem; 
+    }
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    .dropbtn {
+        background-color: #0088cc; 
+        color: #fff;
+        padding: 8px 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        outline: none;
+    }
+    .triangle {
+        font-size: 12px;
+        margin-left: 8px;
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        min-width: 250px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        z-index: 999;
+    }
+    .dropdown-content a {
+        display: block;
+        color: #333;
+        padding: 12px 16px;
+        text-decoration: none;
+    }
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+    }
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+    .dropdown:hover .dropbtn {
+        background-color: #006699;
+    }
+
+    .top-items {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+    .top-item {
+        text-align: center;
+    }
+    .top-item-bar {
+        background-color: #8DC63F;
+        color: #fff;
+        font-weight: bold;
+        font-size: 1.5rem;
+        width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+    }
+    .bar1 {
+        height: 180px;
+    }
+    .bar2 {
+        height: 120px;
+    }
+    .bar3 {
+        height: 90px;
+    }
+    .top-item-label {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+</style>
+
+{% endblock %}
