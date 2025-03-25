@@ -9,7 +9,7 @@
 {% block body %}
     <body>
         <div class="p-4 w-75 mx-auto">
-            <h1>Invitations à vos wishlist</h1>
+            <h1>Invitations à vos wishlists</h1>
         
             <table class="table table-striped">
                 <thead>
@@ -22,7 +22,7 @@
                 <tbody>
                     {% for membership in memberships %}
                     <tr>
-                        <td>{{ membership.status }}</td>
+                        <td>{% include 'membership/_status_badge.html.twig' with { 'status': membership.status } only %}</td>
                         <td>
                             <p>{{membership.wishlist.title}}</p>
                         </td>
@@ -32,7 +32,7 @@
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="3">Pas d'invitations pour le moment</td>
+                        <td colspan="3">Vous n'avez envoyé aucune invitation pour le moment.</td>
                     </tr>
                     {% endfor %}
                 </tbody>

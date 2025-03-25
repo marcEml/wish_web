@@ -28,11 +28,23 @@ final class SharingController extends AbstractController
     }
 
     #[Route('/wishlist/public/{token}', name: 'app_public_wishlist')]
-    public function publicView(string $token): Response
+    public function publicView(string $token, WishlistRepository $wishlistRepository): Response
     {
-        // Validate token logic here...
-        // Fetch the wishlist based on token or reverse calculate
-        return $this->render('wishlist/public.html.twig', ['token' => $token]);
+
+
+        // Fetch the wishlist by ID
+        $wishlist = $wishlistRepository->find($wishlistId);
+
+        if (!$wishlist) {
+            throw $this->createNotFoundException('Wishlist not found');
+        }
+
+        $items = $wishlist->getItems();
+
+        return $this->render('sharing/public.html.twig', [
+            'wishlist' => $wishlist,
+            'items' => $items,
+        ]);
     }
 
     #[Route('/wishlist/private/{token}', name: 'app_private_wishlist')]
@@ -43,17 +55,17 @@ final class SharingController extends AbstractController
         if (!$decoded || !str_contains($decoded, '|')) {
             throw $this->createNotFoundException('Invalid token');
         }
-    
+
         [$wishlistId, $secret] = explode('|', $decoded);
-    
+
         // Optional: Validate the secret if you want extra security
         if ($secret !== 'private_secret') {
             throw $this->createAccessDeniedException('Invalid secret');
         }
-    
+
         // Fetch the wishlist by ID
         $wishlist = $wishlistRepository->find($wishlistId);
-    
+
         if (!$wishlist) {
             throw $this->createNotFoundException('Wishlist not found');
         }
