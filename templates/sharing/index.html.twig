@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SharingController!{% endblock %}
+
+{% block nav %}
+  {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block body %}
+<div class="p-4 w-75 m-auto">
+    <a class="btn btn-success" href="{{ path('app_home') }}">Retourner à l'accueil</a>
+
+    <h3 class="py-4 fw-bold">Inviter des utilisateurs à votre WishList : {{ wishlist.title }}</h3>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Lien public</th>
+                <th scope="col">Lien privé</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <button class="btn btn-warning copy-btn" data-link="{{ public_link }}">
+                        Copier le lien public
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-primary copy-btn" data-link="{{ private_link }}">
+                        Copier le lien privé
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.querySelectorAll('.copy-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const link = button.getAttribute('data-link');
+            navigator.clipboard.writeText(link).then(() => {
+                alert('Lien copié dans le presse-papiers!');
+            }).catch(err => {
+                console.error('Erreur lors de la copie: ', err);
+            });
+        });
+    });
+</script>
+{% endblock %}

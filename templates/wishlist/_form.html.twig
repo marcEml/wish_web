@@ -1,0 +1,64 @@
+{% block stylesheets %}
+<style>
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #FFFFFF;
+ }
+
+ input[type="text"],
+ input[type="number"],
+ textarea,
+ select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  box-sizing: border-box; /* Ensures padding doesn't affect width */
+  margin-bottom: 10px;
+  font-size: 16px;
+ }
+
+ textarea {
+  resize: vertical; /* Allows vertical resizing */
+  height: 150px;
+ }
+
+ input[type="text"]:focus,
+ input[type="number"]:focus,
+ textarea:focus,
+ select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+ }
+
+ .btn-submit {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+ }
+
+ .btn-submit:hover {
+  background-color:rgb(26, 101, 182);
+ }
+
+ a {
+  color: #007bff;
+ }
+</style>
+{% endblock %}
+
+
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <div class="card-footer"> 
+        <button class="btn btn-submit">{{ button_label|default('Enregistrer') }}</button>
+    </div>
+{{ form_end(form) }}

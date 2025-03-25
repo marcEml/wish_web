@@ -29,6 +29,17 @@ class WishlistRepository extends ServiceEntityRepository
             ->getArrayResult();
     }
 
+    public function findWithItems($id): ?Wishlist
+    {
+        return $this->createQueryBuilder('w')
+            ->leftJoin('w.items', 'i')
+            ->addSelect('i')
+            ->where('w.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return Wishlist[] Returns an array of Wishlist objects
 //     */

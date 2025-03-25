@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajoutez à la wishlist{% endblock %}
+
+{% block stylesheets %}
+<style>
+    input, select {
+        width: 100%;
+        height: 46px;
+        border: none;
+        outline: none;
+        padding: 8px 16px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        margin-top: 3px;
+        background-color : #F4F4F5;
+    }
+</style>
+{% endblock %}
+
+{% block nav %}
+  {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block body %}
+<body>
+    <div class="p-4 w-50 m-auto">
+        <h1>Inviter un utilisateur à une wishlist</h1>
+
+        {{ include('membership/_form.html.twig') }}
+
+        <a class="btn btn-primary" href="{{ path('app_membership_index') }}">Retour aux invitations</a>
+    </div>
+</body>
+{% endblock %}

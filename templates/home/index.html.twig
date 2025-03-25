@@ -1,16 +1,180 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Dashboard | Wish{% endblock %}
+
+{% block stylesheets %}
+  <style>
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 2fr 2fr 1fr;
+      gap: 1em;
+      min-height: 100svh;
+      width: 100%;
+      padding: 1em;
+    }
+
+    .dashboard-section {
+      height: 100%;
+      background-color: #edf3f4;
+    }
+
+    .wishlists-section {
+      grid-column: span 2;
+    }
+
+    .dashboard-section-title {
+      background-color: #14223c;
+      color: white;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      padding: 1em;
+    }
+
+    .dashboard-section-title h2 {
+      margin: 0;
+      text-align: center;
+    }
+
+    .invitations-wrapper {
+      height: 100%;
+      padding: 1em;
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+
+    .wishlists-wrapper {
+      height: 100%;
+      padding: 1em;
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+
+    .wishlist-row{
+        display: flex;
+        gap: 1em;
+        width: 100%;
+    }
+
+    .wishlist-row-between {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+{% endblock %}
+
+{% block nav %}
+  {% include 'navbar.html.twig' %}
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+  <div class="dashboard-layout">
+    <section class="dashboard-section wishlists-section">
+      <div class="dashboard-section-title">
+        <h2>Wishlists</h2>
+        <div>
+          <a class="btn btn-success" href="{{ path('app_wishlist_new') }}">Créer une wishlist</a>
+          <a class="btn btn-warning" href="{{ path('app_membership_index') }}">Inviter à une wishlist</a>
+        </div>
+      </div>
+      <div class="wishlists-wrapper">
+        {% if own_wishlists|length > 0 or accepted_wishlists|length > 0 %}
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h3>Mes wishlists</h3>
+                </div>
+                <div class="card-body">
+                  {% for wishlist in own_wishlists %}
+                    <div class="card mb-3">
+                      <div class="card-body">
+                        <div class="wishlist-row-between">
+                            <h5 class="card-title">{{ wishlist.title }}</h5>
+                            {{ include('wishlist/_delete_form.html.twig') }}
+                        </div>
+                        <p class="card-text">
+                          Créée par vous
+                        </p>
+                        <div class="wishlist-row"> 
+                          {{ include('wishlist/_view_button.html.twig') }}   
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+                            {{ include('wishlist/_edit_button.html.twig') }}
+                          
+                            {{ include('wishlist/_share_button.html.twig') }}
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
 
-    <a href="{{ path('app_authentication_logout') }}">Déconnexion</a>
-</div>
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h3>Wishlists partagées</h3>
+                </div>
+                <div class="card-body">
+                  {% for wishlist in accepted_wishlists %}
+                    <div class="card mb-3">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ wishlist.title }}</h5>
+                        <p class="card-text">
+                          Créée par {{ wishlist.user.firstName }}
+                          {{ wishlist.user.lastName }}
+                        </p>
+                        <div class="wishlist-row">
+                            {{ include('wishlist/_view_button.html.twig') }}
+                            {{ include('wishlist/_edit_button.html.twig') }}
+                            {{ include('wishlist/_share_button.html.twig') }}
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <p>Vous n'avez pas encore de wishlist... Commencez à offrir des cadeaux !</p>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="dashboard-section">
+      <div class="dashboard-section-title">
+        <h2>Invitations</h2>
+      </div>
+      <div class="invitations-wrapper">
+        {% for membership in memberships %}
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                Invitation à la wishlist : {{ membership.wishlist.title }} (ID #{{
+                membership.wishlist.id
+              }})
+              </h5>
+              <p class="card-text">
+                {{ membership.wishlist.user.firstName }} {{
+                membership.wishlist.user.lastName
+              }}
+                vous a invité à sa wishlist!
+              </p>
+              {{ include('membership/_accept_button.html.twig') }}
+              {{ include('membership/_decline_button.html.twig') }}
+            </div>
+          </div>
+        {% else %}
+          <p>Pas d'invitations en attente de réponse.</p>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
 {% endblock %}
