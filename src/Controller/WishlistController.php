@@ -56,11 +56,18 @@ final class WishlistController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_wishlist_show', methods: ['GET'])]
-    public function show(Wishlist $wishlist): Response
+    #[Route('/{id}', name: 'app_item_index', methods: ['GET'])]
+    public function show(WishlistRepository $wishlistRepository, int $id): Response
     {
-        return $this->render('wishlist/show.html.twig', [
-            'wishlist' => $wishlist,
+        $wishlist = $wishlistRepository->find($id);
+
+        if (!$wishlist) {
+            throw $this->createNotFoundException('Wishlist not found');
+        }
+
+        return $this->render('item/index.html.twig', [
+            'items' => $wishlist->getItems(),
+            'wishListId' => $wishlist->getId(),
         ]);
     }
 

@@ -17,6 +17,11 @@ final class HomeController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
         $userToken = (int)$request->cookies->get('user_session');
+
+        if (!$userToken) {
+            return $this->redirectToRoute('app_authentication_login');
+        }
+
         $pending_memberships = $entityManager->getRepository(Membership::class)->findBy(['user' => $userToken, 'status' => 'INVITED']);
         $accepted_memberships = $entityManager->getRepository(Membership::class)->findBy(['user' => $userToken, 'status' => 'ACCEPTED']);
         $acceptedWishlistIds = array_map(function ($membership) {

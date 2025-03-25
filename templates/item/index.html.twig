@@ -7,18 +7,16 @@
 {% endblock %}
 
 {% block body %}
-    <div class="p-4 w-75 m-auto">
-        <h1 class="pb-4">Contenu de votre wishlist</h1>
+    <div class="p-4 w-75">
+        <h1 class="pb-4">Contenu de la wishlist</h1>
 
         <table class="table table-striped mb-4">
             <thead>
                 <tr class="table-dark">
                     <th>Id</th>
-                    <th>Nom</th>
+                    <th>Nom de l'item</th>
                     <th>Prix</th>
-                    <th>Lien externe</th>
-                    <th>Description</th>
-                    <th>actions</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,16 +25,14 @@
                     <td>{{ item.id }}</td>
                     <td>{{ item.name }}</td>
                     <td class="placeholder-wave">{{ item.price }}</td>
-                    <td class="col-3"><a target="blank" href="{{ item.externalLink }}" class="link-opacity-100">{{ item.externalLink }}</a></td>
-                    <td>{{ item.description }}</td>
                     <td>
-                        <a class="btn btn-primary" href="{{ path('app_item_show', {'id': item.id, 'wId': wishListId }) }}">Afficher</a>
+                        <a class="btn btn-primary" href="{{ path('app_item_show', {'id': item.id, 'wId': wishListId }) }}">Détails</a>
                         <a class="btn btn-warning" href="{{ path('app_item_edit', {'id': item.id, 'wId': wishListId }) }}">Modifier</a>
                     </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="6">Votre wish list est vide pour le moment.</td>
+                    <td colspan="6">Votre wishlist est vide pour le moment.</td>
                 </tr>
             {% endfor %}
             </tbody>

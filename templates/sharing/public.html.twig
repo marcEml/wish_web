@@ -35,7 +35,32 @@
                         <h5 class="card-title">{{ item.name }}</h5>
                         <p class="card-subtitle">{{ item.description }}</p>
                         <p class="card-text text-success">{{ item.price }}€</p>
-                        <a href="#" class="btn btn-primary acheter-btn" data-bs-toggle="modal" data-bs-target="#buyModal">Acheter</a>
+                        {% if item.id in purchases|map(purchase => purchase.item.id) %}
+  {% set itemPurchase = purchases|filter(p => p.item.id == item.id)|first %}
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Cet item a déjà été acheté par {{ itemPurchase.user.firstName }}
+        {{ itemPurchase.user.lastName }}</h5>
+      <button class="btn btn-success">
+        <a href="{{ asset('uploads/receipts/' ~ itemPurchase.receiptUrl) }}" target="_blank" class="text-decoration-none text-white">Voir la preuve d'achat</a>
+      </button>
+      <p class="card-text">
+        <strong>Message de l'acheteur:</strong>
+        {{ itemPurchase.message }}
+      </p>
+    </div>
+  </div>
+{% else %}
+  <a
+    href="#"
+    class="btn btn-primary acheter-btn"
+    data-bs-toggle="modal"
+    data-bs-target="#buyModal"
+  >
+    Acheter
+  </a>
+{% endif %}
+
                     </div>
                 </div>
             {% else %}
