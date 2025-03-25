@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Item index{% endblock %}
+
+{% block nav %}
+  {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    <div class="p-4 w-75 m-auto">
+        <h1 class="pb-4">Contenu de votre wishlist</h1>
+
+        <table class="table table-striped mb-4">
+            <thead>
+                <tr class="table-dark">
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Prix</th>
+                    <th>Lien externe</th>
+                    <th>Description</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.name }}</td>
+                    <td class="placeholder-wave">{{ item.price }}</td>
+                    <td class="col-3"><a target="blank" href="{{ item.externalLink }}" class="link-opacity-100">{{ item.externalLink }}</a></td>
+                    <td>{{ item.description }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ path('app_item_show', {'id': item.id, 'wId': wishListId }) }}">Afficher</a>
+                        <a class="btn btn-warning" href="{{ path('app_item_edit', {'id': item.id, 'wId': wishListId }) }}">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">Votre wish list est vide pour le moment.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div>
+            <a class="btn btn-success" href="{{ path('app_home') }}">Retourner à l'accueil</a>
+            <a class="btn btn-primary" href="{{ path('app_item_new', {id : wishListId}) }}">Ajouter un objet à la liste</a>
+        </div>
+    </div>
+{% endblock %}

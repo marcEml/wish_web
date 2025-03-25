@@ -38,12 +38,16 @@ class User implements PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Wishlist::class, mappedBy: 'user')]
     private Collection $wishlists;
 
-    #[ORM\OneToOne(targetEntity: Membership::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?Membership $membership = null;
+    /**
+     * @var Collection<int, Membership>
+     */
+    #[ORM\OneToMany(targetEntity: Membership::class, mappedBy: 'user')]
+    private Collection $memberships;
 
     public function __construct()
     {
         $this->wishlists = new ArrayCollection();
+        $this->memberships = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -59,7 +63,6 @@ class User implements PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -71,7 +74,6 @@ class User implements PasswordAuthenticatedUserInterface
     public function setFirstname(string $firstname): static
     {
         $this->firstname = $firstname;
-
         return $this;
     }
 
@@ -83,7 +85,6 @@ class User implements PasswordAuthenticatedUserInterface
     public function setLastname(string $lastname): static
     {
         $this->lastname = $lastname;
-
         return $this;
     }
 
@@ -95,7 +96,6 @@ class User implements PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -107,7 +107,6 @@ class User implements PasswordAuthenticatedUserInterface
     public function setPasswordSalt(int $passwordSalt): static
     {
         $this->passwordSalt = $passwordSalt;
-
         return $this;
     }
 
@@ -119,7 +118,38 @@ class User implements PasswordAuthenticatedUserInterface
     public function setStatus(string $status): static
     {
         $this->status = $status;
+        return $this;
+    }
 
+    public function getWishlists(): Collection
+    {
+        return $this->wishlists;
+    }
+
+    /**
+     * @return Collection<int, Membership>
+     */
+    public function getMemberships(): Collection
+    {
+        return $this->memberships;
+    }
+
+    public function addMembership(Membership $membership): static
+    {
+        if (!$this->memberships->contains($membership)) {
+            $this->memberships->add($membership);
+            $membership->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeMembership(Membership $membership): static
+    {
+        if ($this->memberships->removeElement($membership)) {
+            if ($membership->getUser() === $this) {
+                $membership->setUser(null);
+            }
+        }
         return $this;
     }
 }
