@@ -25,6 +25,10 @@ class Item
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\ManyToOne(targetEntity: Wishlist::class, inversedBy: 'items')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Wishlist $wishlist = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +79,17 @@ class Item
     {
         $this->description = $description;
 
+        return $this;
+    }
+
+    public function getWishlist(): ?Wishlist
+    {
+        return $this->wishlist;
+    }
+
+    public function setWishlist(?Wishlist $wishlist): static
+    {
+        $this->wishlist = $wishlist;
         return $this;
     }
 }

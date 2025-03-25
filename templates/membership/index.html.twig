@@ -2,34 +2,43 @@
 
 {% block title %}Membership index{% endblock %}
 
+{% block nav %}
+  {% include 'navbar.html.twig' %}
+{% endblock %}
+
 {% block body %}
-    <h1>Membership index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Status</th>
-                <th>Wishlist ID</th>
-                <th>User ID</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for membership in memberships %}
-            <tr>
-                <td>{{ membership.status }}</td>
-                <td>
-                    <p>{{membership.wishlist.id}}</p>
-                </td>
-                <td>
-                    <p>{{membership.user.id}}</p>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="2">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_membership_new') }}">Create new</a>
+    <body>
+        <div class="p-4 w-75 mx-auto">
+            <h1>Invitations à vos wishlist</h1>
+        
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Statut</th>
+                        <th>Wishlist</th>
+                        <th>Utilisateur</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for membership in memberships %}
+                    <tr>
+                        <td>{{ membership.status }}</td>
+                        <td>
+                            <p>{{membership.wishlist.title}}</p>
+                        </td>
+                        <td>
+                            <p>{{membership.user.lastname}} {{ membership.user.firstname }}</p>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3">Pas d'invitations pour le moment</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <a class="btn btn-primary" href="{{ path('app_membership_new') }}">Créer une invitation</a>
+        </div>
+    </body>
 {% endblock %}

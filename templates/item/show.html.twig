@@ -2,10 +2,15 @@
 
 {% block title %}Item{% endblock %}
 
-{% block body %}
-    <h1>Item</h1>
+{% block nav %}
+  {% include 'navbar.html.twig' %}
+{% endblock %}
 
-    <table class="table">
+{% block body %}
+   <div class="p-4 w-50 m-auto">
+    <h1>{{ item.name }}</h1>
+
+    <table class="table ">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -30,9 +35,13 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_item_index') }}">back to list</a>
+    <a class="btn btn-primary" href="{{ path('app_item_index', {'id': wishListId}) }}">Retourner à la liste</a>
 
-    <a href="{{ path('app_item_edit', {'id': item.id}) }}">edit</a>
+    <a class="btn btn-warning" href="{{ path('app_item_edit', {'id': item.id, 'wId': wishListId}) }}">Modifier</a>
 
-    {{ include('item/_delete_form.html.twig') }}
+    <form method="post" action="{{ path('app_item_delete', {'id': item.id, 'wId': wishListId}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+        <button class="btn btn-danger mt-4">Supprimer</button>
+    </form>
+   </div>
 {% endblock %}

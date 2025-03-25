@@ -18,8 +18,8 @@ class Wishlist
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\ManyToMany(targetEntity: Item::class)]
-    private ?Collection $items = null;
+    #[ORM\OneToMany(mappedBy: 'wishlist', targetEntity: Item::class, cascade: ['persist', 'remove'])]
+    private Collection $items;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'wishlists')]
     #[ORM\JoinColumn(nullable: false)]
@@ -98,6 +98,25 @@ class Wishlist
             }
         }
 
+        return $this;
+    }
+
+    public function addItem(Item $item): static
+    {
+        if (!$this->items->contains($item)) {
+            $this->items->add($item);
+            $item->setWishlist($this);
+        }
+        return $this;
+    }
+
+    public function removeItem(Item $item): static
+    {
+        if ($this->items->removeElement($item)) {
+            if ($item->getWishlist() === $this) {
+                $item->setWishlist(null);
+            }
+        }
         return $this;
     }
 }

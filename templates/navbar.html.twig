@@ -6,6 +6,8 @@ nav {
     margin: 0 auto;
     padding: 12px 1em;
     max-width: 100svw;
+    align-items: center;
+    box-shadow: 0px 0px 8px #ccc;
     justify-content: space-between;
 }
     
@@ -29,9 +31,7 @@ nav {
 }
     
 .auth {
-    gap: 8px;
-    display: flex;
-    height: 44px;
+
 }
 </style>
 {% endblock %}
@@ -42,7 +42,5 @@ nav {
         <div class="text-wrapper">Wish</div>
     </div>
 
-    <div class="auth">
-        <a href="{{ path('app_authentication_logout') }}" class="btn btn-danger">Déconnexion</a>
-    </div>
+    <a href="{{ path('app_authentication_logout') }}" class="btn btn-danger">Déconnexion</a>
 </nav>

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajoutez à la wishlist{% endblock %}
+{% block title %}New Purchase{% endblock %}
 
 {% block stylesheets %}
 <style>
@@ -23,13 +23,11 @@
 {% endblock %}
 
 {% block body %}
-<body>
-    <div class="p-4 w-50 m-auto">
-        <h1>Inviter un utilisateur à une wishlist</h1>
+    <div class="w-50 m-auto p-4">
+        <h1>Téléversez votre preuve d'achat</h1>
 
-        {{ include('membership/_form.html.twig') }}
+        {{ include('purchase/_form.html.twig') }}
 
-        <a class="btn btn-primary" href="{{ path('app_membership_index') }}">Retour aux invitations</a>
+        <a href="{{ path('app_purchase_index') }}">back to list</a>
     </div>
-</body>
 {% endblock %}

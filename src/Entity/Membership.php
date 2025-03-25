@@ -21,7 +21,6 @@ class Membership
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-
     public function getStatus(): ?string
     {
         return $this->status;
@@ -30,7 +29,6 @@ class Membership
     public function setStatus(string $status): static
     {
         $this->status = $status;
-
         return $this;
     }
 
@@ -42,7 +40,6 @@ class Membership
     public function setWishlist(?Wishlist $wishlist): static
     {
         $this->wishlist = $wishlist;
-
         return $this;
     }
 
@@ -54,7 +51,6 @@ class Membership
     public function setUser(?User $user): static
     {
         $this->user = $user;
-
         return $this;
     }
 }
