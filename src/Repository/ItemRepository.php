@@ -16,13 +16,18 @@ class ItemRepository extends ServiceEntityRepository
         parent::__construct($registry, Item::class);
     }
 
-    public function findTop3ByPrice(): array
+    public function findTop3ByWishlist($wishlist): array
     {
-        return $this ->createQueryBuilder('i')
+    // 如果是多对多(一个wishlist包含多个items, item也可在多个wishlist里)
+    // 假设你的实体里: Item->wishlists is a ManyToMany
+        return $this->createQueryBuilder('i')
+            ->leftJoin('i.wishlists', 'w')
+            ->where('w.id = :wid')
+            ->setParameter('wid', $wishlist->getId())
             ->orderBy('i.price', 'DESC')
             ->setMaxResults(3)
             ->getQuery()
-            ->getResult(); 
+            ->getResult();
     }
 
 //    /**

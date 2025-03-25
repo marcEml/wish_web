@@ -3,7 +3,9 @@
 namespace App\Controller\admin;
 
 use App\Repository\ItemRepository;
+use App\Repository\WishlistRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -19,19 +21,40 @@ final class AdminController extends AbstractController
 
     
 
-    #[Route('/admin/dashboard', name: 'top3_items')]
+    #[Route('/admin/top3items', name: 'top3_items')]
     /*public function dashboard(): Response
     {
         return $this->render('admin/dashboard.html.twig', [
             'controller_name' => 'AdminController',
         ]);
     }*/
-    public function dashboard(ItemRepository $itemRepository): Response
-    {
-        $topItems = $itemRepository->findTop3ByPrice();
+    public function top3Items(
+        Request $request,
+        WishlistRepository $wishlistRepository,
+        ItemRepository $itemRepository
+    ): Response {
+        // 1) 获取全部 wishlist，供下拉菜单使用
+        $allWishlists = $wishlistRepository->findAll();
+
+        // 2) 读取 URL 或表单中传递的 wishlistId
+        $selectedWishlistId = $request->query->get('wishlistId');
+
+        $topItems = [];
+        $selectedWishlist = null;
+
+        // 3) 如果用户选择了某个 wishlist，则查询对应的 top-3 items
+        if ($selectedWishlistId) {
+            $selectedWishlist = $wishlistRepository->find($selectedWishlistId);
+
+            if ($selectedWishlist) {
+                // 在 ItemRepository 中新增一个方法: findTop3ByWishlist($wishlist)
+                $topItems = $itemRepository->findTop3ByWishlist($selectedWishlist);
+            }
+        }
 
         return $this->render('admin/ItemRank.html.twig', [
-            'controller_name' => 'AdminController',
+            'wishlists' => $allWishlists,   // 下拉菜单选项
+            'selectedWishlist' => $selectedWishlist,
             'topItems' => $topItems,
         ]);
     }

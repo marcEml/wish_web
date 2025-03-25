@@ -1,180 +1,149 @@
+{# templates/admin/ItemRank.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminController!{% endblock %}
+{% block title %}Top-3 Items for a Chosen Wishlist{% endblock %}
 
 {% block body %}
-
 <nav class="admin-menu">
     <div class="dropdown">
-        <!-- 这里是下拉菜单的标题按钮 -->
         <button class="dropbtn">
             Administration
-            <span class="triangle">▲</span> {# 小三角形，可通过CSS旋转等效果处理 #}
+            <span class="triangle">▲</span>
         </button>
-
-        <!-- 这里是下拉的内容区域 -->
         <div class="dropdown-content">
-            <!-- 链接1:单个商品排名页面 -->
-            <a href="{{ path('top3_items') }}">
-                The Top-3 Most Expensive Items Bought for a Wishlist
-            </a>
-            
-            <!-- 链接2:愿望清单排名页面 -->
+            <!-- 愿望清单总榜 -->
             <a href="{{ path('top3_wishlists') }}">
-                The Top-3 Wishlists by Total Value of Purchased Gifts
+                The Top-3 Wishlists by Total Value
             </a>
-
-            <!-- 链接3:如果需要,放别的管理链接 -->
-            <a href="#">
-                The Top-3 Something Else
+            <!-- 本页面：单个清单内商品排行榜 -->
+            <a href="{{ path('top3_items') }}">
+                The Top-3 Most Expensive Items (choose a Wishlist)
             </a>
         </div>
     </div>
 </nav>
 
+<h1>Choose a Wishlist to see its Top-3 most expensive items</h1>
+
+<!-- 下拉菜单表单，使用 GET 提交 -->
+<form method="get" action="{{ path('top3_items') }}">
+    <label for="wishlistId">Select a wishlist:</label>
+    <select name="wishlistId" id="wishlistId" onchange="this.form.submit()">
+        <option value="">-- Please choose --</option>
+        {% for w in wishlists %}
+            <option value="{{ w.id }}"
+                {% if selectedWishlist and w.id == selectedWishlist.id %} selected {% endif %}
+            >
+                {{ w.name }}
+            </option>
+        {% endfor %}
+    </select>
+</form>
+
+{% if selectedWishlist %}
+    <h2>Top-3 Items for "{{ selectedWishlist.name }}"</h2>
+    <div class="top-items">
+        {% if topItems is not empty %}
+            {% for item in topItems %}
+                <div class="top-item">
+                    <div class="top-item-image">
+                        {% if item.externalLink %}
+                            <img src="{{ asset(item.externalLink) }}" 
+                                 alt="{{ item.name }}" 
+                                 style="max-width: 100%; max-height: 100%;" />
+                        {% else %}
+                            <img src="{{ asset('images/placeholder.png') }}"
+                                 alt="No image"
+                                 style="max-width: 100%; max-height: 100%;" />
+                        {% endif %}
+                    </div>
+                    <div class="top-item-label">
+                        {{ item.name }}: {{ item.price }}€
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No items found or no items in this wishlist.</p>
+        {% endif %}
+    </div>
+{% else %}
+    <p>Please select a wishlist above to see its top items.</p>
+{% endif %}
+
+
 <style>
-    <style>
-        /* 保留原有示例样式 */
-        .example-wrapper { 
-            margin: 1em auto; 
-            max-width: 800px; 
-            width: 95%; 
-            font: 18px/1.5 sans-serif; 
-        }
-        .example-wrapper code { 
-            background: #F5F5F5; 
-            padding: 2px 6px; 
-        }
-    
-        /* 新增：三列展示区域的样式 */
-        .top-items {
-            display: flex;
-            justify-content: space-around; /* 三列均匀分布 */
-            margin-top: 2rem;
-        }
-        .top-item {
-            display: flex;
-            flex-direction: column;
-            width: 150px;           /* 每一列固定宽度，可根据需要调整 */
-            text-align: center;     /* 内容居中 */
-            border: 1px solid #ccc; /* 简单边框以示区分 */
-            margin: 0 0.5rem;       /* 列之间留一点间距 */
-        }
-        .top-item-image {
-            background-color: #ccc; /* 灰色区域用于放置图片 */
-            height: 100px;          /* 这里用固定高度演示 */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .top-item-label {
-            background-color: #8DC63F; /* 绿色区域 */
-            color: #fff;
-            font-weight: bold;
-            padding: 1rem;
-            margin-top: -1px;         /* 与上方灰色区域紧贴 */
-        }
-        /* 外层容器，便于定位或添加更多菜单项 */
-        .admin-menu {
-            margin-bottom: 1rem; /* 给菜单和内容之间留点空隙 */
-        }
+    /* 这里可直接复用你已有的样式 */
+    .admin-menu {
+        margin-bottom: 1rem; 
+    }
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    .dropbtn {
+        background-color: #0088cc; 
+        color: #fff;
+        padding: 8px 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        outline: none;
+    }
+    .triangle {
+        font-size: 12px;
+        margin-left: 8px;
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        min-width: 250px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        z-index: 999;
+    }
+    .dropdown-content a {
+        display: block;
+        color: #333;
+        padding: 12px 16px;
+        text-decoration: none;
+    }
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+    }
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+    .dropdown:hover .dropbtn {
+        background-color: #006699;
+    }
 
-        /* 下拉菜单整体 */
-        .dropdown {
-            position: relative;
-            display: inline-block; /* 让按钮和内容保持并排/相对定位 */
-        }
-
-        /* 下拉按钮 */
-        .dropbtn {
-            background-color: #0088cc; 
-            color: #fff;
-            padding: 8px 16px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-            outline: none;
-        }
-
-        /* 小三角形（▲）可通过 transform 来控制方向，如有需要可在CSS中做旋转 */
-        .triangle {
-            font-size: 12px;
-            margin-left: 8px;
-        }
-
-        /* 下拉菜单内容，默认隐藏 */
-        .dropdown-content {
-            display: none;
-            position: absolute;     /* 相对于 dropdown 容器进行定位 */
-            background-color: #fff;
-            min-width: 300px;       /* 下拉宽度，可根据内容调整 */
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            z-index: 999;           /* 保证下拉在顶层 */
-        }
-
-        /* 下拉菜单中的每个链接 */
-        .dropdown-content a {
-            display: block;
-            color: #333;
-            padding: 12px 16px;
-            text-decoration: none;
-            white-space: nowrap; /* 避免自动换行 */
-        }
-
-        /* 鼠标悬停效果 */
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
-
-        /* 当鼠标悬停在 .dropdown 上时，显示下拉菜单 */
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        /* 当鼠标悬停在按钮上时，按钮背景变色（可选） */
-        .dropdown:hover .dropbtn {
-            background-color: #006699;
-        }
-    </style>
+    .top-items {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 2rem;
+    }
+    .top-item {
+        display: flex;
+        flex-direction: column;
+        width: 150px;
+        text-align: center;
+        border: 1px solid #ccc;
+        margin: 0 0.5rem;
+    }
+    .top-item-image {
+        background-color: #ccc;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .top-item-label {
+        background-color: #8DC63F;
+        color: #fff;
+        font-weight: bold;
+        padding: 1rem;
+        margin-top: -1px;
+    }
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    <p>Top3 items:</p>
-
-    <div class="top-items">
-        {% for item in topItems %}
-            <div class="top-item">
-                <div class="top-item-image">
-                    {# 
-                      如果有图片链接，则显示该图片；
-                      如果没有图片链接，则显示默认占位图或提示文字。
-                      
-                      这里假设 item.externalLink 字段存储的是“图片路径”或“图片 URL”;
-                      若实际用途是商品外链，则需要额外在实体或数据库中添加一个 image 字段来存储图片路径 
-                    #}
-                    {% if item.externalLink %}
-                        <img src="{{ asset(item.externalLink) }}" 
-                             alt="{{ item.name }}" 
-                             style="max-width: 100%; max-height: 100%;" />
-                    {% else %}
-                        <!-- 显示默认占位图 -->
-                        <img src="{{ asset('images/placeholder.png') }}"
-                             alt="No image"
-                             style="max-width: 100%; max-height: 100%;" />
-                    {% endif %}
-                </div>
-                <div class="top-item-label">
-                    {{ item.name }}: {{ item.price }}€
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-
-    <ul>
-        <li>Your controller at <code>D:/Aeddan/Docs/DCL/WEB/webapp-equipe-7/wish_web/src/Controller/AdminController.php</code></li>
-        <li>Your template at <code>D:/Aeddan/Docs/DCL/WEB/webapp-equipe-7/wish_web/templates/admin/index.html.twig</code></li>
-    </ul>
-</div>
 {% endblock %}
