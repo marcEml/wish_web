@@ -1,47 +1,50 @@
 {# templates/admin/ItemRank.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Top-3 Items for a Chosen Wishlist{% endblock %}
+{% block title %}Les 3 articles les plus chers achetés pour une liste de souhaits{% endblock %}
 
 {% block body %}
 <nav class="admin-menu">
+    <a href="{{ path('app_home') }}" class="back-to-home">
+        Retour à l'accueil
+    </a>
+
     <div class="dropdown">
         <button class="dropbtn">
-            Administration
+            Ranking Option
             <span class="triangle">▲</span>
         </button>
-        <div class="dropdown-content">
-            <!-- 愿望清单总榜 -->
-            <a href="{{ path('top3_wishlists') }}">
-                The Top-3 Wishlists by Total Value
-            </a>
-            <!-- 本页面：单个清单内商品排行榜 -->
+        <div class="dropdown-content">           
             <a href="{{ path('top3_items') }}">
-                The Top-3 Most Expensive Items (choose a Wishlist)
+                Les 3 articles les plus chers achetés pour une liste de souhaits
+            </a>           
+            <a href="{{ path('top3_wishlists') }}">
+                Top 3 des listes de souhaits selon la valeur totale des cadeaux achetés
             </a>
         </div>
     </div>
+    
 </nav>
 
-<h1>Choose a Wishlist to see its Top-3 most expensive items</h1>
+<h1>Choisissez une liste de souhaits pour voir ses 3 articles les plus chers</h1>
 
-<!-- 下拉菜单表单，使用 GET 提交 -->
+
 <form method="get" action="{{ path('top3_items') }}">
-    <label for="wishlistId">Select a wishlist:</label>
+    <label for="wishlistId">Sélectionnez une liste de souhaits:</label>
     <select name="wishlistId" id="wishlistId" onchange="this.form.submit()">
-        <option value="">-- Please choose --</option>
+        <option value="">-- veuillez choisir --</option>
         {% for w in wishlists %}
             <option value="{{ w.id }}"
                 {% if selectedWishlist and w.id == selectedWishlist.id %} selected {% endif %}
             >
-                {{ w.name }}
+                {{ w.title }}
             </option>
         {% endfor %}
     </select>
 </form>
 
 {% if selectedWishlist %}
-    <h2>Top-3 Items for "{{ selectedWishlist.name }}"</h2>
+    <h2>Top-3 Items for "{{ selectedWishlist.title }}"</h2>
     <div class="top-items">
         {% if topItems is not empty %}
             {% for item in topItems %}
@@ -67,12 +70,12 @@
         {% endif %}
     </div>
 {% else %}
-    <p>Please select a wishlist above to see its top items.</p>
+    <p>Veuillez sélectionner une liste de souhaits ci-dessus pour voir ses articles principaux.</p>
 {% endif %}
 
 
 <style>
-    /* 这里可直接复用你已有的样式 */
+    
     .admin-menu {
         margin-bottom: 1rem; 
     }
@@ -143,6 +146,22 @@
         font-weight: bold;
         padding: 1rem;
         margin-top: -1px;
+    }
+
+    .back-to-home {
+        display: inline-block;      
+        background-color: #0088cc;
+        color: #fff;
+        padding: 8px 16px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        text-decoration: none;      
+        margin-bottom: 1rem;        
+        cursor: pointer;
+    }
+    .back-to-home:hover {
+        background-color: #006699;
     }
 </style>
 

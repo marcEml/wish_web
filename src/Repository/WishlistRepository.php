@@ -19,7 +19,7 @@ class WishlistRepository extends ServiceEntityRepository
     public function findTop3ListsByValue(): array
     {
         return $this->createQueryBuilder('w')
-            // 注意这里使用 select(...)，把 w 作为 wishlist，SUM(i.price) 作为 totalValue
+
             ->select('w as wishlist, SUM(i.price) as totalValue')
             ->leftJoin('w.items', 'i')
             ->groupBy('w.id')
@@ -40,28 +40,5 @@ class WishlistRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-//    /**
-//     * @return Wishlist[] Returns an array of Wishlist objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('w')
-//            ->andWhere('w.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('w.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
-//    public function findOneBySomeField($value): ?Wishlist
-//    {
-//        return $this->createQueryBuilder('w')
-//            ->andWhere('w.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }
