@@ -43,8 +43,8 @@ class AuthenticationSubscriber implements EventSubscriberInterface
         $sessionCookie = $request->cookies->get('user_session');
 
         if (!$sessionCookie) {
-            // $loginUrl = $this->router->generate('app_authentication_login');
-            // $event->setResponse(new RedirectResponse($loginUrl));
+            $loginUrl = $this->router->generate('app_authentication_login');
+            $event->setResponse(new RedirectResponse($loginUrl));
         }
     }
 
