@@ -15,7 +15,9 @@ class WishlistType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title');
+            ->add('title', null, [
+                'label' => 'Nom de la wishlist',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
