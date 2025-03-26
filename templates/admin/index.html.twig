@@ -1,6 +1,12 @@
-{% extends 'landing/base.html.twig' %}
+{% extends 'base.html.twig' %}
+
+{% block nav %}
+  {% include 'admin/header.html.twig' %}
+{% endblock %}
 
 {% block body %}
-    <h1>Admin Dashboard</h1>
-    <p>Welcome to the Admin Panel!</p>
+    <div class="w-50 mx-auto py-4">
+        <h1>Admin Dashboard</h1>
+        <p>Welcome to the Admin Panel!</p>  
+    </div>
 {% endblock %}

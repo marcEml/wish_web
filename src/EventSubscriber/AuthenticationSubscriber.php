@@ -21,6 +21,12 @@ class AuthenticationSubscriber implements EventSubscriberInterface
             'app_landing',
             'app_authentication_login',
             'app_authentication_signin',
+            'admin_users_management',
+            'admin_remove_user',
+            'admin_lock_user',
+            'app_admin',
+            'top3_items',
+            'top3_wishlists',
         ];
     }
 
@@ -43,8 +49,8 @@ class AuthenticationSubscriber implements EventSubscriberInterface
         $sessionCookie = $request->cookies->get('user_session');
 
         if (!$sessionCookie) {
-            // $loginUrl = $this->router->generate('app_authentication_login');
-            // $event->setResponse(new RedirectResponse($loginUrl));
+            $loginUrl = $this->router->generate('app_authentication_login');
+            $event->setResponse(new RedirectResponse($loginUrl));
         }
     }
 
