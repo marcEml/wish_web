@@ -138,4 +138,13 @@ final class SharingController extends AbstractController
         $flasher->success('Vous avez été invité à rejoindre la wishlist ! Acceptez ou refusez l\'invitation.');
         return $this->redirectToRoute('app_home');
     }
+
+    #[Route('/wishlist/view/{id}', name: 'app_wishlist_view')]
+    public function view(Wishlist $wishlist): Response
+    {
+        $publicToken = base64_encode($wishlist->getId() . '|public_secret');
+        $publicLink = $this->generateUrl('app_public_wishlist', ['token' => $publicToken], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        return $this->redirect($publicLink);
+    }
 }

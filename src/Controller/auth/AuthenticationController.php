@@ -56,6 +56,7 @@ final class AuthenticationController extends AbstractController
             $user->setFirstname($firstname);
             $user->setPasswordSalt(10);
             $user->setStatus('ACTIVE');
+            $user->setIsLocked(false);
 
             // Hash the password
             $hashedPassword = $passwordHasher->hashPassword(
