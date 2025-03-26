@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Flasher\Prime\FlasherInterface;
 
 #[Route('/purchase')]
 final class PurchaseController extends AbstractController
@@ -28,14 +29,15 @@ final class PurchaseController extends AbstractController
     }
 
     #[Route('/new/{id}', name: 'app_purchase_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, int $id): Response
+    public function new(Request $request, FlasherInterface $flasher, EntityManagerInterface $entityManager, int $id): Response
     {
         $purchase = new Purchase();
 
         // get user id
         $userToken = (int)$request->cookies->get('user_session');
         if (empty($userToken)) {
-            return $this->redirectToRoute('app_login');
+            $flasher->error('Vous devez être connecté pour téléverser une preuve de paiement.');
+            return $this->redirectToRoute('app_authentication_login');
         }
 
         // set user
