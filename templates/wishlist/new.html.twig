@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Wishlist{% endblock %}
+{% block title %}Créer une wishlist | Wish{% endblock %}
 
 {% block stylesheets %}
 <style>
@@ -29,7 +29,7 @@
   <div class="card-header"> 
     <h1>Créer une nouvelle wishlist !</h1>
   </div>
-  <div class="card-body"> 
+  <div class="card-body bg-white"> 
     {{ include('wishlist/_form.html.twig', {'button_label': 'Créer'}) }}
   </div>
 </div>

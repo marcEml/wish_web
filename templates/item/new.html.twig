@@ -1,20 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Item{% endblock %}
+{% block title %}Ajouter un item | Wish{% endblock %}
 
 {% block stylesheets %}
 <style>
-    input {
-        width: 100%;
-        height: 46px;
-        border: none;
-        outline: none;
-        padding: 8px 16px;
-        border-radius: 12px;
-        margin-bottom: 12px;
-        margin-top: 3px;
-        background-color : #F4F4F5;
-    }
+ .container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #14223c;
+ }
+
+ h1 {
+  color: #FFFFFF;
+  text-align: center;
+ }
 </style>
 {% endblock %}
 
@@ -23,11 +25,13 @@
 {% endblock %}
 
 {% block body %}
-    <div class="p-4 w-50 m-auto">
-        <h1>Ajouter un nouvel objet</h1>
+    <div class="card container"> 
+        <div class="card-header"> 
+            <h1>Ajouter un nouvel objet</h1>
+        </div>
 
-        {{ include('item/_form.html.twig') }}
-    
-        <a class="btn btn-primary" href="{{ path('app_item_index', {id : wishListId}) }}">Retourner à la liste</a>
+        <div class="card-body bg-white"> 
+            {{ include('item/_form.html.twig') }}
+        </div>
     </div>
 {% endblock %}
