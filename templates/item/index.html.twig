@@ -1,46 +1,72 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Item index{% endblock %}
+{% block title %}Liste des items | Wish{% endblock %}
+
+{% block stylesheets %}
+<style>
+ .container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #14223c;
+ }
+
+ h1 {
+  color: #FFFFFF;
+  text-align: center;
+ }
+</style>
+{% endblock %}
 
 {% block nav %}
   {% include 'navbar.html.twig' %}
 {% endblock %}
 
 {% block body %}
-    <div class="p-4 w-75">
-        <h1 class="pb-4">Contenu de la wishlist</h1>
+    <div class="card container">
+        <div class="card-header"> 
+            <h1>Contenu de la wishlist</h1>
+        </div>
 
-        <table class="table table-striped mb-4">
-            <thead>
-                <tr class="table-dark">
-                    <th>Id</th>
-                    <th>Nom de l'item</th>
-                    <th>Prix</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for item in items %}
-                <tr>
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.name }}</td>
-                    <td class="placeholder-wave">{{ item.price }}</td>
-                    <td>
-                        <a class="btn btn-primary" href="{{ path('app_item_show', {'id': item.id, 'wId': wishListId }) }}">Détails</a>
-                        <a class="btn btn-warning" href="{{ path('app_item_edit', {'id': item.id, 'wId': wishListId }) }}">Modifier</a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="6">Votre wishlist est vide pour le moment.</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        <div class="card-body bg-white"> 
+            <table class="table table-striped mb-4">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Id</th>
+                        <th>Nom de l'item</th>
+                        <th>Prix</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.name }}</td>
+                        <td class="placeholder-wave">{{ item.price }}</td>
+                        <td>
+                            <a class="btn btn-primary" href="{{ path('app_item_show', {'id': item.id, 'wId': wishListId }) }}">Détails</a>
+                            <a class="btn btn-warning" href="{{ path('app_item_edit', {'id': item.id, 'wId': wishListId }) }}">Modifier</a>
+                            <form method="post" action="{{ path('app_item_delete', {'id': item.id, 'wId': wishListId}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet item ? Cet action est irréversible !');" class="d-inline">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+                                <button class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">Votre wishlist est vide pour le moment.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-        <div>
-            <a class="btn btn-success" href="{{ path('app_home') }}">Retourner à l'accueil</a>
-            <a class="btn btn-primary" href="{{ path('app_item_new', {id : wishListId}) }}">Ajouter un objet à la liste</a>
+        <div class="card-footer bg-white">
+            <a class="btn btn-secondary" href="{{ path('app_home') }}">Retourner à l'accueil</a>
+            <a class="btn btn-success float-end" href="{{ path('app_item_new', {id : wishListId}) }}">Ajouter un objet à la liste</a>
         </div>
     </div>
 {% endblock %}

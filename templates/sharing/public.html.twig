@@ -1,17 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SharingController!{% endblock %}
+{% block title %}{{wishlist.title}} | Wish{% endblock %}
 
 {% block nav %}
-  {% include 'navbar.html.twig' %}
+  {% include 'navbar_no_disconnect.html.twig' %}
 {% endblock %}
 
 {% block body %}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
 <div class="p-4 w-75 m-auto">
-    <a class="btn btn-success mb-4" href="{{ path('app_home') }}">Retourner à l'accueil</a>
-
     <h3 class="py-4 fw-bold">La WishList <span class="text-primary">{{ wishlist.title }}</span> a été partagée avec vous</h3>
 
     <!-- Sorting Select -->
@@ -24,49 +20,59 @@
     </div>
 
     <div class="container text-center">
-        <div class="row row-cols-2" id="items-container">
-            {% for item in items %}
-                <div class="card mx-1 mb-4 item-card" style="width: 18rem;"
-                     data-id="{{ item.id }}"
-                     data-price="{{ item.price }}"
-                     data-external-link="{{ item.externalLink }}">
-                    <img src="https://t3.ftcdn.net/jpg/06/50/41/82/360_F_650418284_gH1jJH1H9A0ErBxosY1f6ofyPrnCiFie.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ item.name }}</h5>
-                        <p class="card-subtitle">{{ item.description }}</p>
-                        <p class="card-text text-success">{{ item.price }}€</p>
-                        {% if item.id in purchases|map(purchase => purchase.item.id) %}
-  {% set itemPurchase = purchases|filter(p => p.item.id == item.id)|first %}
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">Cet item a déjà été acheté par {{ itemPurchase.user.firstName }}
-        {{ itemPurchase.user.lastName }}</h5>
-      <button class="btn btn-success">
-        <a href="{{ asset('uploads/receipts/' ~ itemPurchase.receiptUrl) }}" target="_blank" class="text-decoration-none text-white">Voir la preuve d'achat</a>
-      </button>
-      <p class="card-text">
-        <strong>Message de l'acheteur:</strong>
-        {{ itemPurchase.message }}
-      </p>
-    </div>
-  </div>
-{% else %}
-  <a
-    href="#"
-    class="btn btn-primary acheter-btn"
-    data-bs-toggle="modal"
-    data-bs-target="#buyModal"
-  >
-    Acheter
-  </a>
-{% endif %}
+      <div class="row row-cols-2" id="items-container">
+        {% for item in items %}
+          <div class="card mx-1 mb-4 item-card {% if item.id in purchases|map(purchase => purchase.item.id) %}text-muted bg-light{% endif %}" 
+            style="width: 18rem;"
+            data-id="{{ item.id }}"
+            data-price="{{ item.price }}"
+            data-external-link="{{ item.externalLink }}">
+              <img src="https://t3.ftcdn.net/jpg/06/50/41/82/360_F_650418284_gH1jJH1H9A0ErBxosY1f6ofyPrnCiFie.jpg" class="card-img-top" alt="...">
+              <div class="card-body">
+          <h5 class="card-title">{{ item.name }}</h5>
+          <p class="card-subtitle">{{ item.description }}</p>
+          <p class="card-text {% if item.id in purchases|map(purchase => purchase.item.id) %}text-muted{% else %}text-success{% endif %}">{{ item.price }}€</p>
+          
+          {% if item.id in purchases|map(purchase => purchase.item.id) %}
+            {% set itemPurchase = purchases|filter(p => p.item.id == item.id)|first %}
+            <div class="purchased-info d-none position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-75 text-white p-3" style="z-index: 10;">
+              <h5>Cet item a déjà été acheté par {{ itemPurchase.user.firstName }} {{ itemPurchase.user.lastName }}</h5>
+              <p><strong>Message de l'acheteur:</strong> {{ itemPurchase.message }}</p>
+              <div class="btn btn-success mb-2">
+              <a href="{{ asset('uploads/receipts/' ~ itemPurchase.receiptUrl) }}" target="_blank" class="text-decoration-none text-white">Voir la preuve d'achat</a>
+            </div>
+            </div>
+          {% else %}
+            <a
+              href="#"
+              class="btn btn-primary acheter-btn"
+              data-bs-toggle="modal"
+              data-bs-target="#buyModal"
+            >
+              Acheter
+            </a>
+          {% endif %}
+              </div>
+          </div>
+        {% else %}
+          <p>Cette wishlist est vide pour le moment.</p>
+        {% endfor %}
 
-                    </div>
-                </div>
-            {% else %}
-                <p>Cette wishlist est vide pour le moment.</p>
-            {% endfor %}
-        </div>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          // Add hover effect for purchased items
+          document.querySelectorAll('.item-card.text-muted').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+        this.querySelector('.purchased-info').classList.remove('d-none');
+            });
+            
+            card.addEventListener('mouseleave', function() {
+        this.querySelector('.purchased-info').classList.add('d-none');
+            });
+          });
+        });
+      </script>
+      </div>
     </div>
 </div>
 
@@ -108,9 +114,15 @@
         // Handle redirection to external link
         document.getElementById('redirect-buy').addEventListener('click', function () {
             if (externalLink && externalLink !== '#') {
-                window.open(externalLink, '_blank');
+          // Open external link in a new tab
+          window.open(externalLink, '_blank');
+          
+          // Also open upload proof route in another tab
+          const itemId = selectedCard.getAttribute('data-id');
+          const uploadUrl = '{{ path("app_purchase_new", {"id": "ITEM_ID_PLACEHOLDER"}) }}'.replace('ITEM_ID_PLACEHOLDER', itemId);
+          window.open(uploadUrl, '_blank');
             } else {
-                alert('Lien externe indisponible');
+          alert('Lien externe indisponible');
             }
         });
 

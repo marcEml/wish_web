@@ -2,38 +2,63 @@
 
 {% block title %}Hello SharingController!{% endblock %}
 
+{% block stylesheets %}
+<style>
+ .container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #14223c;
+ }
+
+ h1 {
+  color: #FFFFFF;
+  text-align: center;
+ }
+</style>
+{% endblock %}
+
 {% block nav %}
   {% include 'navbar.html.twig' %}
 {% endblock %}
 
 {% block body %}
-<div class="p-4 w-75 m-auto">
-    <a class="btn btn-success" href="{{ path('app_home') }}">Retourner à l'accueil</a>
+<div class="card container">
+    <div class="card-header">
+        <h1>Inviter des utilisateurs à votre WishList : {{ wishlist.title }}</h3>
+    </div>
 
-    <h3 class="py-4 fw-bold">Inviter des utilisateurs à votre WishList : {{ wishlist.title }}</h3>
-
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Lien public</th>
-                <th scope="col">Lien privé</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <button class="btn btn-warning copy-btn" data-link="{{ public_link }}">
-                        Copier le lien public
-                    </button>
-                </td>
-                <td>
-                    <button class="btn btn-primary copy-btn" data-link="{{ private_link }}">
-                        Copier le lien privé
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="card-body bg-white"> 
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Lien public</th>
+                    <th scope="col">Lien privé</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                    <p>Le lien public permettra à toute personne ayant le lien de pouvoir consulter et acheter des items de votre wishlist.</p>
+                        <button class="btn btn-warning copy-btn" data-link="{{ public_link }}">
+                            Copier le lien public
+                        </button>
+                    </td>
+                    <td>
+                    <p>Le lien privé permettra à toute personne ayant le lien de recevoir automatiquement une invitation pour modifier votre wishlist. Ils ne pourront cependant pas la supprimer.</p>
+                        <button class="btn btn-primary copy-btn" data-link="{{ private_link }}">
+                            Copier le lien privé
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer bg-white">
+        <a class="btn btn-secondary" href="{{ path('app_home') }}">Retourner à l'accueil</a>
+    </div>
 </div>
 
 <script>

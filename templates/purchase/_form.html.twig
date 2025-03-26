@@ -1,4 +1,79 @@
+{% block stylesheets %}
+<style>
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #000000;
+ }
+
+ input[type="text"],
+ input[type="number"],
+ textarea,
+ select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  box-sizing: border-box; /* Ensures padding doesn't affect width */
+  margin-bottom: 10px;
+  font-size: 16px;
+ }
+
+ textarea {
+  resize: vertical; /* Allows vertical resizing */
+  height: 150px;
+ }
+
+ input[type="text"]:focus,
+ input[type="number"]:focus,
+ textarea:focus,
+ select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+ }
+
+input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+}
+
+input[type="file"]:hover {
+    background-color: #e9ecef;
+}
+
+input[type="file"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Custom styling for the file button appearance */
+input[type="file"]::file-selector-button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 3px;
+    background-color: #6c757d;
+    color: white;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: #5a6268;
+}
+</style>
+{% endblock %}
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <div class="card-footer bg-white px-0 pb-0"> 
+        <button class="btn btn-success btn-submit">{{ button_label|default('Téléverser') }}</button>
+    </div>
 {{ form_end(form) }}
