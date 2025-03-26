@@ -103,11 +103,10 @@
                           Créée par vous
                         </p>
                         <div class="wishlist-row"> 
-                          {{ include('wishlist/_view_button.html.twig') }}   
-
-                            {{ include('wishlist/_edit_button.html.twig') }}
-                          
-                            {{ include('wishlist/_share_button.html.twig') }}
+                          {{ include('wishlist/_view_button.html.twig') }}
+                          {{ include('wishlist/_edit_items_button.html.twig') }}   
+                          {{ include('wishlist/_edit_button.html.twig') }}
+                          {{ include('wishlist/_share_button.html.twig') }}
                         </div>
                       </div>
                     </div>
@@ -131,9 +130,10 @@
                           {{ wishlist.user.lastName }}
                         </p>
                         <div class="wishlist-row">
-                            {{ include('wishlist/_view_button.html.twig') }}
-                            {{ include('wishlist/_edit_button.html.twig') }}
-                            {{ include('wishlist/_share_button.html.twig') }}
+                          {{ include('wishlist/_view_button.html.twig') }}
+                          {{ include('wishlist/_edit_items_button.html.twig') }}
+                          {{ include('wishlist/_edit_button.html.twig') }}
+                          {{ include('wishlist/_share_button.html.twig') }}
                         </div>
                       </div>
                     </div>
