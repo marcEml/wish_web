@@ -39,7 +39,8 @@ label {
 
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <div class="card-footer bg-white"> 
-        <button class="btn btn-success btn-submit w-100">{{ button_label|default('Enregistrer') }}</button>
+    <div class="card-footer bg-white px-0 pb-0"> 
+        <a class="btn btn-secondary" href="{{ path('app_home') }}">Retourner à l'accueil</a>
+        <button class="btn btn-success btn-submit float-end">{{ button_label|default('Enregistrer') }}</button>
     </div>
 {{ form_end(form) }}

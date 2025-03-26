@@ -40,6 +40,6 @@ label {
     {{ form_widget(form) }}
     <div class="card-footer bg-white px-0 pb-0"> 
         <a class="btn btn-secondary" href="{{ path('app_item_index', {id : wishListId}) }}">Retourner à la liste</a>
-        <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+        <button class="btn btn-success float-end">{{ button_label|default('Enregistrer') }}</button>
     </div>
 {{ form_end(form) }}
