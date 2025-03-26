@@ -19,7 +19,7 @@
         </select>
     </div>
 
-    <div class="container text-center">
+    <div class="text-center">
       <div class="row row-cols-2" id="items-container">
         {% for item in items %}
           <div class="card mx-1 mb-4 item-card {% if item.id in purchases|map(purchase => purchase.item.id) %}text-muted bg-light{% endif %}" 
