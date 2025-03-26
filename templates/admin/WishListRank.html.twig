@@ -4,40 +4,29 @@
     Les 3 meilleures wishlists par valeur totale
 {% endblock %}
 
+{% block nav %}
+  {% include 'admin/header.html.twig' %}
+{% endblock %}
+
 {% block body %}
 
-<nav class="admin-menu">
-    <div class="dropdown">
-        <button class="dropbtn">
-            Administration
-            <span class="triangle">▲</span>
-        </button>
-        <div class="dropdown-content">
-            <a href="{{ path('top3_wishlists') }}">
-                Les 3 meilleures wishlists par valeur totale
-            </a>
-            <a href="{{ path('top3_items') }}">
-                Les 3 articles les plus chers par wishlist
-            </a>
-        </div>
+<div class="py-4 w-75 mx-auto">
+    <h2>Les 3 meilleures wishlists par valeur totale</h2>
+
+    <div class="top3-wishlists">
+        {% set positions = {0: {class: 'bar1', pos: 1}, 1: {class: 'bar2', pos: 2}, 2: {class: 'bar3', pos: 3}} %}
+        
+        {% for index, wishlist in top3Wishlists %}
+            <div class="wishlist-rank">
+                <div class="wishlist-value">
+                    {{ positions[index].pos }}. {{ wishlist.wishlist.title }} : {{ wishlist.totalValue }}€
+                </div>
+                <div class="wishlist-bar {{ positions[index].class }}">
+                    {{ positions[index].pos }}
+                </div>
+            </div>
+        {% endfor %}
     </div>
-</nav>
-
-<h2>Les 3 meilleures wishlists par valeur totale</h2>
-
-<div class="top3-wishlists">
-    {% set positions = {0: {class: 'bar1', pos: 1}, 1: {class: 'bar2', pos: 2}, 2: {class: 'bar3', pos: 3}} %}
-    
-    {% for index, wishlist in top3Wishlists %}
-        <div class="wishlist-rank">
-            <div class="wishlist-value">
-                {{ positions[index].pos }}. {{ wishlist.wishlist.title }} : {{ wishlist.totalValue }}€
-            </div>
-            <div class="wishlist-bar {{ positions[index].class }}">
-                {{ positions[index].pos }}
-            </div>
-        </div>
-    {% endfor %}
 </div>
 
 <style>

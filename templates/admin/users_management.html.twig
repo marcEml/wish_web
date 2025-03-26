@@ -2,7 +2,7 @@
 
 {% block title %} Users management page {% endblock %}
 
-{% block body %}
+{% block stylesheets %}
 <style>
     body {
         gap: 72px;
@@ -15,15 +15,6 @@
         width: 100%;
         margin: 0 auto;
         max-width: 1200px;
-    }
-        
-    nav {
-        width: 100%;
-        display: flex;
-        margin: 0 auto;
-        padding: 12px 0;
-        max-width: 1000px;
-        justify-content: space-between;
     }
         
     .logo {
@@ -107,56 +98,35 @@
         flex-direction: column;
         justify-content: flex-end;
     }
-
-
-      
 </style>
+{% endblock %}
 
-<body>
-    <!-- NAV BAR -->
-    <nav>
-        <div class="logo">
-            <img class="image" src="/assets/img/image-22.png" />
-            <div class="text-wrapper">Wish</div>
-        </div>
+{% block nav %}
+  {% include 'admin/header.html.twig' %}
+{% endblock %}
 
-        <div class="auth">
-            <button class="login--button"><a href="/authentication/login">se connecter</a></button>
-            <button class="signin--button"><a href="/authentication/signin">Créer un compte</a></button>
-        </div>
-    </nav>
+{% block body %}
+<section>
+    <h1>Liste des utilisateurs</h1>
 
-    <section>
-        <div class="grid-container">
-            {% for user in users %}
-                <div class="grid-item">
-                    <p>Id : {{ user.id }}</p>
-                    <p>Email : {{ user.email }}</p>
-                    <p>Firstname : {{ user.firstname }}</p>
-                    <p>Lastname : {{ user.lastname }}</p>
-                    <p>Status : {{ user.status }}</p>
-                    <p>Is locked : {{ user.isLocked ? 'Yes' : 'No' }}</p>
-                    <form method="POST" action={{ path('admin_lock_user', { 'id': user.id }) }}>
-                        <button type="submit">Lock/Unlock user</button>
-                    </form>
-                    <form method="POST" action={{ path('admin_remove_user', { 'id': user.id }) }}>
-                        <button type="submit">Remove user</button>
-                    </form>
-                </div>
-            {% endfor %}
-        </div>
-    </section>
-
-    <footer>
-        <nav>
-            <div class="logo">
-                <img class="image" src="/assets/img/image-22.png" />
-                <div class="text-wrapper">Wish</div>
+    <div class="grid-container">
+        {% for user in users %}
+            <div class="grid-item rounded">
+                <p>Id : {{ user.id }}</p>
+                <p>Email : {{ user.email }}</p>
+                <p>Firstname : {{ user.firstname }}</p>
+                <p>Lastname : {{ user.lastname }}</p>
+                <p>Status : {{ user.status }}</p>
+                <p>Is locked : {{ user.isLocked ? 'Yes' : 'No' }}</p>
+                <form method="POST" action={{ path('admin_lock_user', { 'id': user.id }) }}>
+                    <button class="btn btn-warning mb-2" type="submit">Vérouiller/débloquer</button>
+                </form>
+                <form method="POST" action={{ path('admin_remove_user', { 'id': user.id }) }}>
+                    <button class="btn btn-danger" type="submit">Supprimer</button>
+                </form>
             </div>
-
-            <div></div>
-        </nav>
-    </footer>
-</body>
+        {% endfor %}
+    </div>
+</section>
 
 {% endblock %}

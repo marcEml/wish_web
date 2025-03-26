@@ -59,6 +59,6 @@ label {
 {{ form_start(form) }}
     {{ form_widget(form) }}
     <div class="card-footer"> 
-        <button class="btn btn-submit">{{ button_label|default('Enregistrer') }}</button>
+        <button type="submit" class="btn btn-submit">{{ button_label|default('Enregistrer') }}</button>
     </div>
 {{ form_end(form) }}

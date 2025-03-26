@@ -3,65 +3,53 @@
 
 {% block title %}Les 3 articles les plus chers par wishlist{% endblock %}
 
+{% block nav %}
+  {% include 'admin/header.html.twig' %}
+{% endblock %}
+
 {% block body %}
-<nav class="admin-menu">
-    <div class="dropdown">
-        <button class="dropbtn">
-            Administration
-            <span class="triangle">▲</span>
-        </button>
-        <div class="dropdown-content">
-            <!-- 愿望清单总榜 -->
-            <a href="{{ path('top3_wishlists') }}">
-                Les 3 meilleures wishlists par valeur totale
-            </a>
-            <!-- 本页面：单个清单内商品排行榜 -->
-            <a href="{{ path('top3_items') }}">
-                Les 3 articles les plus chers par wishlist
-            </a>
-        </div>
-    </div>
-</nav>
 
-<h1>Les 3 articles les plus chers par wishlist</h1>
+<div class="w-75 mx-auto py-4">
+    <h1>Les 3 articles les plus chers par wishlist</h1>
 
-<!-- 下拉菜单表单，使用 GET 提交 -->
-<form method="get" action="{{ path('top3_items') }}">
-    <label for="wishlistId">Wishlist</label>
-    <select name="wishlistId" id="wishlistId" onchange="this.form.submit()">
-        <option value="">Sélectionner une wishlist</option>
-        {% for w in wishlists %}
-            <option value="{{ w.id }}"
-                {% if selectedWishlist and w.id == selectedWishlist.id %} selected {% endif %}
-            >
-                {{ w.title }}
-            </option>
-        {% endfor %}
-    </select>
-</form>
-
-{% if selectedWishlist %}
-    <h2>Top-3 Items for "{{ selectedWishlist.title }}"</h2>
-    <div class="top-items">
-        {% if topItems is not empty %}
-            {% set positions = {0: {class: 'bar1', pos: 1}, 1: {class: 'bar2', pos: 2}, 2: {class: 'bar3', pos: 3}} %}
-            {% for index, item in topItems %}
-                <div class="top-item">
-                    <div class="top-item-bar {{ positions[index].class }}">
-                        {{ positions[index].pos }}
-                    </div>
-                    <div class="top-item-label">
-                        {{ item.name }}: {{ item.price }}€
-                    </div>
-                </div>
+    <!-- 下拉菜单表单，使用 GET 提交 -->
+    <form class="py-4" method="get" action="{{ path('top3_items') }}">
+        <label for="wishlistId">Wishlist</label>
+        <select class="form-select" name="wishlistId" id="wishlistId" onchange="this.form.submit()">
+            <option value="">Sélectionner une wishlist</option>
+            {% for w in wishlists %}
+                <option value="{{ w.id }}"
+                    {% if selectedWishlist and w.id == selectedWishlist.id %} selected {% endif %}
+                >
+                    {{ w.title }}
+                </option>
             {% endfor %}
-        {% else %}
-            <p>Cette wishlist ne comporte aucun item pour l'instant.</p>
-        {% endif %}
-    </div>
-{% else %}
-    <p>Choisissez une wishlist pour voir ses 3 articles les plus chers.</p>
-{% endif %}
+        </select>
+    </form>
+
+    {% if selectedWishlist %}
+        <h2>Top-3 Items for "{{ selectedWishlist.title }}"</h2>
+        <div class="top-items">
+            {% if topItems is not empty %}
+                {% set positions = {0: {class: 'bar1', pos: 1}, 1: {class: 'bar2', pos: 2}, 2: {class: 'bar3', pos: 3}} %}
+                {% for index, item in topItems %}
+                    <div class="top-item">
+                        <div class="top-item-bar {{ positions[index].class }}">
+                            {{ positions[index].pos }}
+                        </div>
+                        <div class="top-item-label">
+                            {{ item.name }}: {{ item.price }}€
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Cette wishlist ne comporte aucun item pour l'instant.</p>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>Choisissez une wishlist pour voir ses 3 articles les plus chers.</p>
+    {% endif %}
+</div>
 
 
 <style>
