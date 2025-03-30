@@ -110,20 +110,11 @@ final class AdminController extends AbstractController
             'topItems' => $topItems,
         ]);
     }
-    /*public function index(ItemRepository $itemRepository): Response
-    {
-        // 调用自定义方法获取价格最高的前三个 Item
-        $topItems = $itemRepository->findTop3ByPrice();
 
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
-            'topItems' => $topItems,
-        ]);
-    }*/
     #[Route('/admin/top3wishlists', name: 'top3_wishlists')]
     public function top3Wishlists(WishlistRepository $wishlistRepository): Response
     {
-        // 获取总价值最高的前三个愿望清单（含总价值）
+        
         $top3 = $wishlistRepository->findTop3ListsByValue();
 
         // 如果使用上面第二种写法 (getArrayResult)，$top3 是数组，需要手动遍历

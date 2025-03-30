@@ -40,6 +40,9 @@
                         <div class="top-item-label">
                             {{ item.name }}: {{ item.price }}€
                         </div>
+                        <div class="top-item-description">
+                            {{ item.description }}
+                        </div>
                     </div>
                 {% endfor %}
             {% else %}
@@ -132,6 +135,7 @@
         font-weight: bold;
         margin-bottom: 0.5rem;
     }
+
 </style>
 
 {% endblock %}
