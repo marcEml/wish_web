@@ -75,8 +75,9 @@ final class AuthenticationController extends AbstractController
             $cookie = Cookie::create('user_session')
                 ->withValue($user->getId())
                 ->withExpires(strtotime('+7 days'))
-                ->withSecure(true)
-                ->withHttpOnly(true);
+                ->withSecure(false)
+                ->withHttpOnly(true)
+                ->withSameSite('strict');
 
             $response = $this->redirectToRoute('app_authentication_login');
             $response->headers->setCookie($cookie);
@@ -111,7 +112,7 @@ final class AuthenticationController extends AbstractController
             $cookie = Cookie::create('user_session')
                 ->withValue($user->getId())
                 ->withExpires(strtotime('+7 days'))
-                ->withSecure(true)
+                ->withSecure(false)
                 ->withHttpOnly(true);
 
             $response = $this->redirectToRoute('app_home');
@@ -134,7 +135,7 @@ final class AuthenticationController extends AbstractController
             Cookie::create('user_session')
                 ->withValue('')
                 ->withExpires(strtotime('-1 day'))
-                ->withSecure(true)
+                ->withSecure(false)
                 ->withHttpOnly(true)
         );
 

@@ -93,6 +93,23 @@ final class WishlistController extends AbstractController
     public function delete(Request $request, Wishlist $wishlist, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $wishlist->getId(), $request->getPayload()->getString('_token'))) {
+            // Remove all associated purchases
+            $purchases = [];
+            $wishlistItems = $wishlist->getItems();
+            $wishlistItemIds = array_map(function ($item) {
+                return $item->getId();
+            }, $wishlistItems->toArray());
+
+            foreach ($wishlistItems as $item) {
+                $purchaseRepository = $entityManager->getRepository(\App\Entity\Purchase::class);
+                $itemPurchases = $purchaseRepository->findBy(['item' => $item]);
+                foreach ($itemPurchases as $purchase) {
+                    $purchases[] = $purchase;
+                }
+            }
+            foreach ($purchases as $purchase) {
+                $entityManager->remove($purchase);
+            }
             $entityManager->remove($wishlist);
             $entityManager->flush();
         }

@@ -45,12 +45,14 @@
                         <button class="btn btn-warning copy-btn" data-link="{{ public_link }}">
                             Copier le lien public
                         </button>
+                        <p class="card p-2">{{ public_link }}</p>
                     </td>
                     <td>
                     <p>Le lien privé permettra à toute personne ayant le lien de recevoir automatiquement une invitation pour modifier votre wishlist. Ils ne pourront cependant pas la supprimer.</p>
                         <button class="btn btn-primary copy-btn" data-link="{{ private_link }}">
                             Copier le lien privé
                         </button>
+                        <p class="card p-2">{{ private_link }}</p>
                     </td>
                 </tr>
             </tbody>
