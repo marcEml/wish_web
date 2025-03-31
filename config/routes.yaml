@@ -6,4 +6,5 @@ controllers:
 
 landingPage:
   path: /
-  controller: App\Controller\LandingController::app_landing
+  controller: App\Controller\LandingController::index
+  

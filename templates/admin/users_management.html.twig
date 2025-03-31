@@ -1,0 +1,132 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Users management page {% endblock %}
+
+{% block stylesheets %}
+<style>
+    body {
+        gap: 72px;
+        width: 100wh;
+        display: flex;
+        flex-direction: column;
+    }
+        
+    section {
+        width: 100%;
+        margin: 0 auto;
+        max-width: 1200px;
+    }
+        
+    .logo {
+        gap: 8px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+    }
+        
+    .logo img {
+        height: 44px;
+    }
+        
+    .text-wrapper {
+        font-weight: bold;
+    }
+        
+    .auth {
+        gap: 8px;
+        display: flex;
+        height: 44px;
+    }
+
+    button a {
+        text-decoration: none;
+        color: white;
+    }
+        
+    .signin--button {
+        border: none;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+        font-weight: 600;
+        padding: 12px 16px;
+        border-radius: 44px;
+        background: #00b8de;
+    }
+        
+    .signin--button:hover {
+        background: #00a2c2;
+    }
+        
+    .login--button {
+        border: none;
+        cursor: pointer;
+        transition: 0.3s;
+        font-weight: 600;
+        padding: 12px 16px;
+        border-radius: 44px;
+        color: #111 !important;
+        background: transparent;
+    }
+    
+    .login--button a {
+        color: #111 !important;
+    }
+        
+    .login--button:hover {
+        background: #ebebeb !important;
+    }
+    
+    .grid-container {
+        display: grid;
+        grid-template-columns: 20% 20% 20% 20% 20%;
+        gap: 20px;
+    }
+
+    .grid-item {
+        padding: 20px;
+        text-align: left;
+        border: 1px solid #667379;
+    }
+        
+    footer {
+        width: 100wh;
+        display: flex;
+        padding: 40px 0;
+        min-height: 250px;
+        background: #dbdbdb;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+</style>
+{% endblock %}
+
+{% block nav %}
+  {% include 'admin/header.html.twig' %}
+{% endblock %}
+
+{% block body %}
+<section>
+    <h1>Liste des utilisateurs</h1>
+
+    <div class="grid-container">
+        {% for user in users %}
+            <div class="grid-item rounded">
+                <p>Id : {{ user.id }}</p>
+                <p>Email : {{ user.email }}</p>
+                <p>Firstname : {{ user.firstname }}</p>
+                <p>Lastname : {{ user.lastname }}</p>
+                <p>Status : {{ user.status }}</p>
+                <p>Is locked : {{ user.isLocked ? 'Yes' : 'No' }}</p>
+                <form method="POST" action={{ path('admin_lock_user', { 'id': user.id }) }}>
+                    <button class="btn btn-warning mb-2" type="submit">Vérouiller/débloquer</button>
+                </form>
+                <form method="POST" action={{ path('admin_remove_user', { 'id': user.id }) }}>
+                    <button class="btn btn-danger" type="submit">Supprimer</button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

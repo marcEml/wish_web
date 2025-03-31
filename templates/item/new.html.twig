@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un item | Wish{% endblock %}
+
+{% block stylesheets %}
+<style>
+ .container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #14223c;
+ }
+
+ h1 {
+  color: #FFFFFF;
+  text-align: center;
+ }
+</style>
+{% endblock %}
+
+{% block nav %}
+  {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    <div class="card container"> 
+        <div class="card-header"> 
+            <h1>Ajouter un nouvel objet</h1>
+        </div>
+
+        <div class="card-body bg-white"> 
+            {{ include('item/_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}
